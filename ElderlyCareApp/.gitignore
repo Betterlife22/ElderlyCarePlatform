@@ -1,0 +1,69 @@
+## Ignore build results and temporary files
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+artifacts/
+
+## Ignore Visual Studio-specific files
+.vs/
+.vscode/
+FileContentIndex/
+*.user
+*.suo
+*.cache
+*.pdb
+*.opendb
+
+## Ignore Rider / JetBrains IDE files
+.idea/
+*.sln.iml
+
+## Ignore ASP.NET Core Razor Pages generated files
+node_modules/
+wwwroot/lib/
+wwwroot/dist/
+wwwroot/build/
+wwwroot/assets/
+wwwroot/*.map
+wwwroot/*.gz
+wwwroot/*.br
+wwwroot/lib/bootstrap/
+wwwroot/lib/jquery-validation/
+!wwwroot/lib/custom-scripts/
+
+## Ignore NuGet Packages
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+
+## Ignore Resharper / Rider files
+*.DotSettings.user
+_ReSharper.Caches/
+
+## Ignore logs, coverage, and reports
+coverage/
+coverage*.json
+*.trx
+TestResults/
+CodeCoverage/
+
+## Ignore MSBuild & NUnit Logs
+*.binlog
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
+is-*.*.json
+
+## Ignore temporary files
+~$*
+*~
