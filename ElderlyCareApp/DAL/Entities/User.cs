@@ -12,7 +12,7 @@
         public string Gender { get; set; } = Constants.Male;
         [MaxLength(100)]
         public required string Address { get; set; }
-        public virtual ElderlyProfile ElderlyProfile { get; set; } = new();
+        public virtual ElderlyProfile? ElderlyProfile { get; set; }
         public virtual ICollection<HealthRecord>? HealthRecords { get; set; } = new List<HealthRecord>();
         public virtual ICollection<Caregiver>? Caregivers { get; set; } = new List<Caregiver>();
         public virtual ICollection<Booking>? Bookings { get; set; } = new List<Booking>();
