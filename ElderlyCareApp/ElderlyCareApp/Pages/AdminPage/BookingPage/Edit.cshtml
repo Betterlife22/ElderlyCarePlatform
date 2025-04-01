@@ -1,0 +1,133 @@
+﻿@page
+@model ElderlyCareApp.Pages.AdminPage.BookingPage.EditModel
+
+@{
+    ViewData["Title"] = "Edit Booking";
+    Layout = null;
+}
+
+<h1>Edit Booking</h1>
+
+<h4>Booking</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <!-- Display Validation Errors -->
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Booking.ScheduleDate" class="control-label"></label>
+                <input asp-for="Booking.ScheduleDate" class="form-control" />
+                <span asp-validation-for="Booking.ScheduleDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Booking.CaregiverId" class="control-label">Caregiver</label>
+                <select asp-for="Booking.CaregiverId" class="form-control" asp-items="@(ViewData["CaregiverId"] as SelectList)"></select>
+                <span asp-validation-for="Booking.CaregiverId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Booking.Status" class="control-label">Status</label>
+                @if (Model.Booking.Status == "Confirmed")
+                {
+                    <select asp-for="Booking.Status" class="form-control" disabled>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                    <input type="hidden" asp-for="Booking.Status" />
+                }
+                else
+                {
+                    <select asp-for="Booking.Status" class="form-control">
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                }
+                <span asp-validation-for="Booking.Status" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Booking.AdminNote" class="control-label">Admin Note</label>
+                <textarea asp-for="Booking.AdminNote" class="form-control"></textarea>
+                <span asp-validation-for="Booking.AdminNote" class="text-danger"></span>
+            </div>
+
+            <input type="hidden" asp-for="Booking.Id" />
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        margin: 20px;
+        padding: 20px;
+    }
+
+    h1, h4 {
+        color: #333;
+    }
+
+    .container {
+        max-width: 600px;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .text-danger {
+        font-size: 14px;
+    }
+
+    a {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+        a:hover {
+            text-decoration: underline;
+        }
+</style>

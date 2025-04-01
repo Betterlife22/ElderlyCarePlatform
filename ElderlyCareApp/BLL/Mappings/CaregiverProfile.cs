@@ -6,7 +6,8 @@ namespace BLL.Mappings
     {
         public CaregiverProfile()
         {
-            CreateMap<Caregiver, CaregiverDTO>();
+            CreateMap<Caregiver, CaregiverDTO>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName));
 
             CreateMap<CaregiverCreateDTO, Caregiver>()
                 .ForMember(dest => dest.Created, opt => opt.MapFrom(_ => DateTime.Now))

@@ -1,4 +1,5 @@
 ﻿using BLL.DTO.BookingDTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace BLL.Services
 {
@@ -15,15 +16,31 @@ namespace BLL.Services
 
         public async Task<List<BookingDTO>> GetAllBookingsAsync()
         {
-            var bookings = await _unitOfWork.GetRepository<Booking>().GetAllAsync();
+            var bookings = await _unitOfWork.GetRepository<Booking>()
+                .Entities
+                .Include(b => b.User)
+                .Include(b => b.Caregiver)
+                    .ThenInclude(c => c.User)
+                .Include(b => b.Service)
+                .ToListAsync();
+
             return _mapper.Map<List<BookingDTO>>(bookings);
         }
 
+
         public async Task<BookingDTO?> GetBookingByIdAsync(int id)
         {
-            var booking = await _unitOfWork.GetRepository<Booking>().GetByIdAsync(id);
+            var booking = await _unitOfWork.GetRepository<Booking>()
+                .Entities
+                .Include(b => b.User)
+                .Include(b => b.Caregiver)
+                    .ThenInclude(c => c.User)
+                .Include(b => b.Service)
+                .FirstOrDefaultAsync(b => b.Id == id);
+
             return booking != null ? _mapper.Map<BookingDTO>(booking) : null;
         }
+
 
         public async Task AddBookingAsync(BookingCreateDTO bookingDto)
         {
@@ -43,12 +60,52 @@ namespace BLL.Services
             }
         }
 
-        public async Task UpdateBookingAsync(int id, BookingUpdateDTO bookingDto)
+        public async Task<string> UpdateBookingAsync(BookingUpdateDTO bookingDto)
         {
             var repo = _unitOfWork.GetRepository<Booking>();
-            var booking = await repo.GetByIdAsync(id);
-            if (booking == null) throw new Exception("Booking not found");
+            var booking = await repo.GetByIdAsync(bookingDto.Id);
 
+            if (booking == null)
+                return "Booking not found";
+
+
+            // Check if the new schedule date is in the past
+            if (bookingDto.ScheduleDate < DateTime.Today)
+                return "Cannot update booking to a past date.";
+
+            // If status is "Cancelled", skip other checks
+            if (bookingDto.Status == "Cancelled")
+            {
+                _mapper.Map(bookingDto, booking);
+
+                _unitOfWork.BeginTransaction();
+                try
+                {
+                    repo.Update(booking);
+                    await _unitOfWork.SaveAsync();
+                    _unitOfWork.CommitTransaction();
+                    return "Booking cancelled successfully.";
+                }
+                catch
+                {
+                    _unitOfWork.RollBack();
+                    return "An error occurred while cancelling the booking.";
+                }
+            }
+
+            // If status is being updated to "Confirmed", check caregiver availability
+            if (bookingDto.Status == "Confirmed")
+            {
+                if (await IsCaregiverBusyAsync(bookingDto.CaregiverId, bookingDto.ScheduleDate, bookingDto.Id))
+                    return "Caregiver is already booked for another appointment.";
+            }
+
+            // Check if caregiver is available on the new schedule date
+            if (await IsCaregiverBusyAsync(bookingDto.CaregiverId, bookingDto.ScheduleDate, bookingDto.Id))
+                return "Caregiver is already booked for another appointment.";
+
+
+            // Map updated values
             _mapper.Map(bookingDto, booking);
 
             _unitOfWork.BeginTransaction();
@@ -57,12 +114,23 @@ namespace BLL.Services
                 repo.Update(booking);
                 await _unitOfWork.SaveAsync();
                 _unitOfWork.CommitTransaction();
+                return "Booking updated successfully.";
             }
             catch
             {
                 _unitOfWork.RollBack();
-                throw;
+                return "An error occurred while updating the booking.";
             }
+        }
+
+        private async Task<bool> IsCaregiverBusyAsync(int caregiverId, DateTime scheduleDate, int excludeBookingId = 0)
+        {
+            return await _unitOfWork.GetRepository<Booking>()
+                .Entities
+                .AnyAsync(b => b.CaregiverId == caregiverId &&
+                               b.ScheduleDate.Date == scheduleDate.Date &&
+                               (b.Status == "Confirmed" || b.Status == "Pending") &&
+                               b.Id != excludeBookingId);
         }
 
         public async Task DeleteBookingAsync(int id)

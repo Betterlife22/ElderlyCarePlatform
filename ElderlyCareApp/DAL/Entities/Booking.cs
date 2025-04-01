@@ -6,7 +6,8 @@
         public int CaregiverId { get; set; }    
         public int ServiceId { get; set; }
         public DateTime ScheduleDate { get; set; }
-        public string Status { get; set; } = Constants.InReview;
+        public string Status { get; set; } = null!;
+        public string? AdminNote { get; set; }
         public virtual User User { get; set; } = null!;
         public virtual Caregiver Caregiver { get; set; } = null!;
         public virtual Service Service { get; set; } = null!;

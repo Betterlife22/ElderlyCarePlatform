@@ -7,6 +7,7 @@
         public const string Admin = "Admin";
         public const string Caregiver = "Caregiver";
         public const string Representative = "Representative";
+        public const string Customer = "Customer";
 
         #endregion
 
@@ -33,13 +34,15 @@
 
         public const string InReview = "InReview";
         public const string InProccess = "InProccess";
-        public const string Done = "Done";
+        public const string Cancelled = "Cancelled";
+        public const string Confirmed = "Confirmed";
+        public const string Completed = "Completed";
 
         #endregion
 
         #region ReceiptStatus
 
-        public const string Pedning = "Pedning";
+        public const string Pending = "Pending";
         public const string Paid = "Paid";
 
         #endregion

@@ -8,6 +8,6 @@ namespace BLL.DTO.ReceiptDTOs
         public int BookingId { get; set; }
         public float Amount { get; set; }
         public string? PaymentMethod { get; set; }
-        public string? Status { get; set; } 
+        public string Status { get; set; } = Constants.Pending;
     }
 }
