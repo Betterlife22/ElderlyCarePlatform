@@ -1,20 +1,30 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
-namespace ElderlyCareApp.Pages
+public class LoginModel : PageModel
 {
-    public class IndexModel : PageModel
+    [BindProperty]
+    [Required]
+    [EmailAddress]
+    public string Email { get; set; } = string.Empty;
+
+    [BindProperty]
+    [Required]
+    public string Password { get; set; } = string.Empty;
+
+    [BindProperty]
+    public string LoginType { get; set; } = "User";
+
+    public IActionResult OnPost()
     {
-        private readonly ILogger<IndexModel> _logger;
-
-        public IndexModel(ILogger<IndexModel> logger)
+        if (!ModelState.IsValid)
         {
-            _logger = logger;
+            return Page();
         }
 
-        public void OnGet()
-        {
 
-        }
+
+        return RedirectToPage("/Index"); // Redirect after login
     }
 }

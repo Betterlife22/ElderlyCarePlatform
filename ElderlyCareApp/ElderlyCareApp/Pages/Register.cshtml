@@ -1,0 +1,448 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<style>
+    .register-container {
+        background: url('https://www.whiddon.com.au/yourlife/wp-content/uploads/sites/2/2023/02/aged-care-worker-holding-senior-womans-hand.jpg') no-repeat center center;
+        background-size: cover;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+        .register-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
+
+    .register-content {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 500px;
+        padding: 2rem;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-content {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 12px 15px;
+        border: 1px solid #ced4da;
+        transition: all 0.3s ease;
+        box-shadow: none;
+    }
+
+        .form-control:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+    .form-label {
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: #495057;
+    }
+
+    .btn {
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5c636a;
+            border-color: #565e64;
+        }
+
+    select.form-control {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 16px 12px;
+        padding-right: 2.5rem;
+    }
+
+    .input-group-text {
+        border-radius: 8px 0 0 8px;
+        background-color: #f8f9fa;
+    }
+
+    .text-danger {
+        font-size: 0.875rem;
+        margin-top: 5px;
+    }
+
+    .datepicker {
+        border-radius: 8px;
+        border: 1px solid #ced4da;
+        padding: 10px;
+    }
+
+    .social-register {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .social-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin: 0 5px;
+        color: white;
+        font-size: 18px;
+    }
+
+    .btn-google {
+        background-color: #DB4437;
+    }
+
+    .btn-facebook {
+        background-color: #4267B2;
+    }
+
+    .btn-microsoft {
+        background-color: #00A1F1;
+    }
+</style>
+
+<div class="register-container">
+    <div class="register-content">
+        <h2 class="text-center text-primary mb-4">
+            <i class="fas fa-user-plus me-2"></i>Register
+        </h2>
+
+        <div class="d-flex justify-content-center gap-3 mb-4">
+            <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#userRegisterModal">
+                <i class="fas fa-user me-2"></i>User Register
+            </button>
+            <button class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#staffRegisterModal">
+                <i class="fas fa-user-tie me-2"></i>Staff Register
+            </button>
+        </div>
+
+        <p class="text-center text-muted mt-3">
+            Already have an account? <a href="/" class="text-primary">Login here</a>
+        </p>
+    </div>
+</div>
+
+<div class="modal fade" id="userRegisterModal" tabindex="-1" aria-labelledby="userRegisterModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="userRegisterModalLabel">
+                    <i class="fas fa-user me-2"></i>User Registration
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-action="Register" class="needs-validation" novalidate>
+                    <input type="hidden" asp-for="Role" value="User" />
+                    <!-- Guardian Section -->
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-outline-primary" onclick="toggleGuardianFields()">
+                            <i class="fas fa-user-plus me-2"></i>
+                            <span id="guardianButtonText">Add Guardian Information</span>
+                        </button>
+                    </div>
+
+                    <div id="guardianFields" style="display: none;">
+                        <div class="mb-3">
+                            <label asp-for="GuardianName" class="form-label">Guardian Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user-shield"></i></span>
+                                <input asp-for="GuardianName" class="form-control" placeholder="Enter guardian's name" />
+                            </div>
+                            <span asp-validation-for="GuardianName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="GuardianAge" class="form-label">Guardian Age</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-birthday-cake"></i></span>
+                                <input asp-for="GuardianAge" type="number" class="form-control" placeholder="Enter guardian's age" />
+                            </div>
+                            <span asp-validation-for="GuardianAge" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="UserName" class="form-label">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input asp-for="UserName" class="form-control" placeholder="Enter your username" required />
+                        </div>
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label">Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            <input asp-for="Email" type="email" class="form-control" placeholder="Enter your email" required />
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input asp-for="Password" type="password" class="form-control" placeholder="Enter your password" required />
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                            <input asp-for="PhoneNumber" class="form-control" placeholder="Enter your phone number" />
+                        </div>
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="BirthDate" class="form-label">Birth Date</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                            <input asp-for="BirthDate" class="form-control datepicker" placeholder="Select your birth date" />
+                        </div>
+                        <span asp-validation-for="BirthDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Gender" class="form-label">Gender</label>
+                        <select asp-for="Gender" class="form-control">
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Address" class="form-label">Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-home"></i></span>
+                            <input asp-for="Address" class="form-control" placeholder="Enter your address" />
+                        </div>
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2 mt-3">
+                        <i class="fas fa-user-plus me-2"></i>Register
+                    </button>
+
+                    <div class="social-register mt-4">
+                        <p class="text-muted">Or register with</p>
+                        <div class="d-flex justify-content-center">
+                            <a href="#" class="social-btn btn-google" title="Google">
+                                <i class="fab fa-google"></i>
+                            </a>
+                            <a href="#" class="social-btn btn-facebook" title="Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="social-btn btn-microsoft" title="Microsoft">
+                                <i class="fab fa-microsoft"></i>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="staffRegisterModal" tabindex="-1" aria-labelledby="staffRegisterModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary text-white">
+                <h5 class="modal-title" id="staffRegisterModalLabel">
+                    <i class="fas fa-user-tie me-2"></i>Staff Registration
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-action="Register" class="needs-validation" novalidate>
+                    <input type="hidden" asp-for="Role" value="Staff" />
+                    
+                    <div class="mb-3">
+                        <label asp-for="UserName" class="form-label">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input asp-for="UserName" class="form-control" placeholder="Enter your username" required />
+                        </div>
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label">Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            <input asp-for="Email" type="email" class="form-control" placeholder="Enter your email" required />
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input asp-for="Password" type="password" class="form-control" placeholder="Enter your password" required />
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                            <input asp-for="PhoneNumber" class="form-control" placeholder="Enter your phone number" />
+                        </div>
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="BirthDate" class="form-label">Birth Date</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                            <input asp-for="BirthDate" class="form-control datepicker" placeholder="Select your birth date" />
+                        </div>
+                        <span asp-validation-for="BirthDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Gender" class="form-label">Gender</label>
+                        <select asp-for="Gender" class="form-control">
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Address" class="form-label">Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-home"></i></span>
+                            <input asp-for="Address" class="form-control" placeholder="Enter your address" />
+                        </div>
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-secondary w-100 py-2 mt-3">
+                        <i class="fas fa-user-plus me-2"></i>Register as Staff
+                    </button>
+
+                    <div class="social-register mt-4">
+                        <p class="text-muted">Or register with</p>
+                        <div class="d-flex justify-content-center">
+                            <a href="#" class="social-btn btn-google" title="Google">
+                                <i class="fab fa-google"></i>
+                            </a>
+                            <a href="#" class="social-btn btn-facebook" title="Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="social-btn btn-microsoft" title="Microsoft">
+                                <i class="fab fa-microsoft"></i>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true,
+                orientation: 'bottom auto',
+                templates: {
+                    leftArrow: '<i class="fas fa-chevron-left"></i>',
+                    rightArrow: '<i class="fas fa-chevron-right"></i>'
+                }
+            });
+
+            $('.form-control').on('focus', function() {
+                $(this).parent().find('.input-group-text').css({
+                    'background-color': '#e9ecef',
+                    'transition': 'all 0.3s ease'
+                });
+            }).on('blur', function() {
+                $(this).parent().find('.input-group-text').css('background-color', '#f8f9fa');
+            });
+
+        });
+        function toggleGuardianFields() {
+            const guardianFields = document.getElementById('guardianFields');
+            const buttonText = document.getElementById('guardianButtonText');
+
+            if (guardianFields.style.display === 'none') {
+                guardianFields.style.display = 'block';
+                buttonText.textContent = 'Remove Guardian Information';
+            } else {
+                guardianFields.style.display = 'none';
+                buttonText.textContent = 'Add Guardian Information';
+            }
+        }
+    </script>
+}
