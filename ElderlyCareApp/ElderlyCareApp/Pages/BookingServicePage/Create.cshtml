@@ -15,11 +15,11 @@
             <form method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>                
                 <div class="form-group">
-                    <label asp-for="Booking.CaregiverId" class="control-label"></label>
+                    <label asp-for="Booking.CaregiverId" class="control-label">CareGiver</label>
                     <select asp-for="Booking.CaregiverId" class ="form-control" asp-items="ViewBag.CaregiverId"></select>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Booking.ServiceId" class="control-label"></label>
+                    <label asp-for="Booking.ServiceId" class="control-label">Service</label>
                     <select asp-for="Booking.ServiceId" class ="form-control" asp-items="ViewBag.ServiceId"></select>
                 </div>
                 <div class="form-group">

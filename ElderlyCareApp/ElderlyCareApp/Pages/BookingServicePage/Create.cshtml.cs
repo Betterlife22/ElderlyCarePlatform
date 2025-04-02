@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using DAL.Entities;
-using BLL.Services;
 using BLL.Interfaces;
+using BLL.DTO.BookingDTOs;
 
 namespace ElderlyCareApp.Pages.BookingServicePage
 {
@@ -24,14 +23,14 @@ namespace ElderlyCareApp.Pages.BookingServicePage
 
         public async Task<IActionResult> OnGet()
         {
-        ViewData["CaregiverId"] = new SelectList(await _careService.GetAllCaregiversAsync(), "Id", "Certifications");
+        ViewData["CaregiverId"] = new SelectList(await _careService.GetAllCaregiversAsync(), "Id", "UserName");
         ViewData["ServiceId"] = new SelectList(await _serviceService.GetAllServicesAsync(), "Id", "Description");
         
             return Page();
         }
 
         [BindProperty]
-        public Booking Booking { get; set; } = default!;
+        public BookingCreateDTO Booking { get; set; } = default!;
 
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()

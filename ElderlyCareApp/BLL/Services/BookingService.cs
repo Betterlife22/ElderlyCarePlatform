@@ -25,19 +25,20 @@ namespace BLL.Services
 
         public async Task<BookingDTO?> GetBookingByIdAsync(int id)
         {
-            var booking = await _unitOfWork.GetRepository<Booking>().GetByPropertyAsync(b => b.Id == id, includeProperties: "Service");
+            var booking = await _unitOfWork.GetRepository<Booking>().GetByPropertyAsync(b => b.Id == id, includeProperties: "User,Caregiver.User,Service");
             return booking != null ? _mapper.Map<BookingDTO>(booking) : null;
         }
 
 
-        public async Task AddBookingAsync(Booking model)
-        {
-            model.Created = DateTime.Now;
-            model.Status = Constants.InProccess;
+        public async Task AddBookingAsync(BookingCreateDTO model)
+        {          
+            Booking booking = _mapper.Map<Booking>(model);
+            booking.Status = Constants.InProccess;
+            booking.Created = DateTime.Now;
             _unitOfWork.BeginTransaction();
             try
             {
-                await _unitOfWork.GetRepository<Booking>().InsertAsync(model);
+                await _unitOfWork.GetRepository<Booking>().InsertAsync(booking);
                 await _unitOfWork.SaveAsync();
                 _unitOfWork.CommitTransaction();
             }
