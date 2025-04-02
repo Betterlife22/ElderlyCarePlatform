@@ -41,8 +41,9 @@ public class LoginModel : PageModel
             return RedirectToPage("/Staff/Index");
         }
 
-        else
-            return RedirectToPage("/")
-        return RedirectToPage("/Index"); // Redirect after login
+        else if (user.Role == "User")
+            return RedirectToPage("/Auth/Login");
+
+        return RedirectToPage("/Auth/Index"); // Redirect after login
     }
 }
