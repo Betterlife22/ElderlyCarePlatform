@@ -104,6 +104,8 @@
             }
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+
     <script>
         function filterAppointments(status) {
             // Update active button
@@ -123,7 +125,18 @@
                 }
             });
         }
-    </script>
 
+        let connection = new signalR.HubConnectionBuilder()
+            .withUrl("/signalRHub")
+            .build();
+
+        connection.start().catch(err => console.error(err.toString()));
+
+        // Refresh Index page when delete event is received
+        connection.on("UpdateStatus", function () {
+            location.reload();
+        });
+    </script>
+   
 </body>
 </html>
