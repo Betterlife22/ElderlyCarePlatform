@@ -1,4 +1,5 @@
 ﻿using BLL.DTO.UserDTOs;
+using System.Reflection.Metadata.Ecma335;
 
 namespace BLL.Services
 {
@@ -83,6 +84,28 @@ namespace BLL.Services
                 _unitOfWork.RollBack();
                 throw;
             }
+        }
+
+        public async Task<UserDTO> LoginAsync(string email, string password, string loginType)
+        {
+            var repo = _unitOfWork.GetRepository<User>();
+            var user = (await repo.SearchAsync(u => u.UserName == email && u.Role == loginType)).FirstOrDefault() ?? throw new Exception("Email or password is incorrect!");
+            if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
+            {
+                throw new Exception("Email or password is incorrect!");
+            }
+            var userDTO = _mapper.Map<UserDTO>(user);
+            return userDTO;
+        }
+
+        public async Task<UserDTO> RegisterAsync(UserCreateDTO userDto)
+        {
+            var repo = _unitOfWork.GetRepository<User>();
+            var user = _mapper.Map<User>(userDto);
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            await repo.InsertAsync(user);
+            await _unitOfWork.SaveAsync();
+            return _mapper.Map<UserDTO>(user);
         }
     }
 }
