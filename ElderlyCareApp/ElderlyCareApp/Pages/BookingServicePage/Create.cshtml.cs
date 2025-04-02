@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BLL.Interfaces;
 using BLL.DTO.BookingDTOs;
+using BLL.DTO.ServiceDTOs;
 
 namespace ElderlyCareApp.Pages.BookingServicePage
 {
@@ -12,7 +13,8 @@ namespace ElderlyCareApp.Pages.BookingServicePage
         private readonly ICaregiverService _careService;
         private readonly IService _serviceService;
         private readonly IUserService _userService;
-
+        [BindProperty] 
+        public ServiceDTO Service {  get; set; }
         public CreateModel(IBookingService bookingService, ICaregiverService careService, IService serviceService, IUserService userService)
         {
             _bookingService = bookingService;
@@ -21,11 +23,11 @@ namespace ElderlyCareApp.Pages.BookingServicePage
             _userService = userService;
         }
 
-        public async Task<IActionResult> OnGet()
+        public async Task<IActionResult> OnGet(int id)
         {
-        ViewData["CaregiverId"] = new SelectList(await _careService.GetAllCaregiversAsync(), "Id", "UserName");
-        ViewData["ServiceId"] = new SelectList(await _serviceService.GetAllServicesAsync(), "Id", "Description");
-        
+            ViewData["CaregiverId"] = new SelectList(await _careService.GetAllCaregiversAsync(), "Id", "UserName");
+            ViewData["ServiceId"] = new SelectList(await _serviceService.GetAllServicesAsync(), "Id", "Description");
+            Service = await _serviceService.GetServiceByIdAsync(id);
             return Page();
         }
 

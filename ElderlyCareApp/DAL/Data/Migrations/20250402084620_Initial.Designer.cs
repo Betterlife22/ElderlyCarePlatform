@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250402023712_Initial")]
+    [Migration("20250402084620_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -110,6 +110,9 @@ namespace DAL.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Img")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
