@@ -8,7 +8,7 @@
 }
 
 <h1 class="text-center">Booking Details</h1>
-
+<p class="text-success">@TempData["FeedbackSuccess"]</p>
 <div class="container">
     <div class="card shadow-lg p-4 my-4">
         <dl class="row">
@@ -23,7 +23,6 @@
                 @Html.DisplayNameFor(model => model.Booking.Status)
             </dt>
             <dd class="col-sm-9">
-                <!-- Determine the status button class based on the status -->
                 @{
                     string statusClass = Model.Booking.Status switch
                     {
@@ -34,7 +33,7 @@
                         _ => "text-secondary"
                     };
                 }
-                <span class=" @statusClass rounded">
+                <span class="@statusClass rounded">
                     @Model.Booking.Status
                 </span>
             </dd>
@@ -46,7 +45,6 @@
                 @Html.DisplayFor(model => model.Booking.AdminNote)
             </dd>
 
-            <!-- Additional fields -->
             <dt class="col-sm-3 pt-1">
                 @Html.DisplayNameFor(model => model.Booking.CaregiverName)
             </dt>
@@ -62,18 +60,9 @@
             </dd>
         </dl>
 
-        @if (Model.Booking?.Status == Constants.Processing)
+        @if (Model.Booking?.Status == Constants.Completed)
         {
-            <form method="post" asp-page-handler="Cancel" asp-route-id="@Model.Booking.Id" id="cancelForm">
-                <button type="submit" class="btn btn-danger" onclick="return confirmCancel();">Cancel</button>
-            </form>
-        }
-
-        @if (Model.Booking?.Status == Constants.Confirmed)
-        {
-            <form method="post" asp-page-handler="MakePayment" asp-route-bookingId="@Model.Booking.Id" id="paymentForm">
-                <button type="submit" class="btn btn-success mt-3"><i class="bi bi-credit-card-2-back"></i>&nbsp; Make Payment</button>
-            </form>
+            <button class="btn btn-info mt-3" data-bs-toggle="modal" data-bs-target="#feedbackModal">Feedback</button>
         }
     </div>
 
@@ -82,10 +71,71 @@
     </div>
 </div>
 
+<div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Feedback</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-page-handler="SubmitFeedback">
+                    <input type="hidden" name="id" value="@Model.Booking.Id" />
+                    <div class="mb-3">
+                        <label>Rating Score</label>
+                        <div class="star-rating" id="starRating">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                <span class="star" data-value="@i">&#9733;</span>
+                            }
+                        </div>
+                        <input type="hidden" id="ratingScore" name="ratingScore">
+                    </div>
+                    <div class="mb-3">
+                        <label>Review</label>
+                        <textarea class="form-control" name="review" rows="2" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
-        function confirmCancel() {
-            return confirm("Are you sure you want to cancel this booking?");
-        }
+        document.addEventListener("DOMContentLoaded", function () {
+            const stars = document.querySelectorAll(".star");
+            const ratingScore = document.getElementById("ratingScore");
+
+            stars.forEach(star => {
+                star.addEventListener("click", function () {
+                    const value = parseInt(this.getAttribute("data-value"));
+                    ratingScore.value = value;
+                    highlightStars(value);
+                });
+            });
+
+            function highlightStars(value) {
+                stars.forEach((star, index) => {
+                    if (index < value) {
+                        star.classList.add("text-warning");
+                    } else {
+                        star.classList.remove("text-warning");
+                    }
+                });
+            }
+        });
     </script>
+    <style>
+        .star {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #ccc;
+        }
+
+            .star.text-warning {
+                color: #ffc107;
+            }
+    </style>
 }

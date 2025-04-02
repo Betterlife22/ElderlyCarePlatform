@@ -8,6 +8,7 @@ using BLL.Services;
 using DAL.Entities;
 using DAL.Libraries;
 using DAL.Interfaces;
+using BLL.DTO.RatingDTOs;
 
 namespace ElderlyCareApp.Pages.BookingServicePage
 {
@@ -17,12 +18,14 @@ namespace ElderlyCareApp.Pages.BookingServicePage
         private readonly IReceiptService _receiptService;
         private readonly IPaymentService _paymentService;
         private readonly IUnitOfWork _unitOfWork;
-        public DetailsModel(IBookingService bookingService, IReceiptService receiptService,IPaymentService paymentService, IUnitOfWork unitOfWork )
+        private readonly IRatingService _ratingService;
+        public DetailsModel(IBookingService bookingService, IReceiptService receiptService,IPaymentService paymentService, IUnitOfWork unitOfWork , IRatingService ratingService)
         {
             _unitOfWork = unitOfWork;
             _bookingService = bookingService;
             _receiptService = receiptService;
             _paymentService = paymentService;
+            _ratingService = ratingService;
         }
 
         public BookingDTO Booking { get; set; } = default!;
@@ -68,6 +71,24 @@ namespace ElderlyCareApp.Pages.BookingServicePage
             };
             var paymenturl = await _paymentService.VnPayPayment(PaymentInfo);
             return Redirect(paymenturl);
+        }
+        public async Task<IActionResult> OnPostSubmitFeedbackAsync(int id,int ratingScore, string review)
+        {
+            var booking = await _bookingService.GetBookingByIdAsync(id);
+
+            Booking = booking;
+            RatingCreateDTO ratingDto = new RatingCreateDTO
+            {
+                BookingId = Booking.Id,
+                UserId = Booking.UserId,
+                CaregiverId = Booking.CaregiverId,
+                RatingScore = ratingScore,
+                Review = review
+            };
+
+            await _ratingService.AddRatingAsync(ratingDto);
+            TempData["FeedbackSuccess"] = "Thank you for your feedback!";
+            return Page();
         }
     }
 }

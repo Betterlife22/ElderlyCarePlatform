@@ -24,8 +24,6 @@ namespace DAL
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlServer(cnn)
             );
-
-
             return services;
         }
     }
