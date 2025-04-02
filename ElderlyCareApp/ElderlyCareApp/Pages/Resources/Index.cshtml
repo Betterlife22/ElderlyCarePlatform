@@ -1,0 +1,388 @@
+﻿@page
+@model ElderlyCareApp.Pages.Resources.IndexModel
+@{
+    ViewData["Title"] = "MediaLab Health Resources";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #2a7fba;
+            --secondary-color: #f8f9fa;
+            --accent-color: #28a745;
+            --text-color: #333;
+            --light-gray: #e9ecef;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+            .logo img {
+                height: 50px;
+            }
+
+        .logo-text h1 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-top: 30px;
+        }
+
+        .chat-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+            .chat-header h3 {
+                margin: 0;
+                font-size: 1.2rem;
+            }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #28a745;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: var(--secondary-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            max-width: 80%;
+            padding: 12px 15px;
+            border-radius: 15px;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background-color: white;
+            border-radius: 0 15px 15px 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 15px 0 15px 15px;
+        }
+
+        .chat-input {
+            display: none; /* Hidden by default */
+            padding: 15px;
+            border-top: 1px solid var(--light-gray);
+            background-color: white;
+        }
+
+            .chat-input.active {
+                display: flex;
+            }
+
+            .chat-input input {
+                flex: 1;
+                padding: 12px 15px;
+                border: 1px solid var(--light-gray);
+                border-radius: 30px;
+                outline: none;
+                font-size: 1rem;
+            }
+
+            .chat-input button {
+                background-color: var(--primary-color);
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                margin-left: 10px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+                .chat-input button:hover {
+                    background-color: #1a5f8b;
+                }
+
+        .quick-actions {
+            display: none; /* Hidden by default */
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px 20px;
+            background-color: white;
+            border-top: 1px solid var(--light-gray);
+        }
+
+            .quick-actions.active {
+                display: flex;
+            }
+
+        .quick-action {
+            background-color: var(--secondary-color);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .quick-action:hover {
+                background-color: #dee2e6;
+            }
+
+        .start-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .start-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+            margin-top: 20px;
+        }
+
+            .start-button:hover {
+                background-color: #1a5f8b;
+                transform: scale(1.05);
+            }
+
+        .welcome-message {
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+
+        @@media (max-width: 768px) {
+            .chat-container {
+                height: 500px;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+        }
+        .typing-indicator span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #666;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+
+            .typing-indicator span:nth-child(2) {
+                animation-delay: 0.2s;
+            }
+
+            .typing-indicator span:nth-child(3) {
+                animation-delay: 0.4s;
+            }
+            
+        </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="/images/medialab-logo.png" alt="MediaLab Hospital Logo" />
+            <div class="logo-text">
+                <h1>MediaLab Health Resources</h1>
+            </div>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-header">
+                <h3>Elderly Care Assistant</h3>
+                <div class="status">
+                    <div class="status-dot"></div>
+                    <span>Online</span>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <!-- Initial welcome content - shown only before starting -->
+                <div class="start-container" id="startContainer">
+                    <div class="welcome-message">
+                        <h2>Welcome to MediaLab Health Resources</h2>
+                        <p>Our Elderly Care Assistant can help you with:</p>
+                        <ul style="text-align: left; display: inline-block;">
+                            <li>Daily exercise recommendations</li>
+                            <li>Medication reminders</li>
+                            <li>Nutrition advice</li>
+                            <li>Health monitoring tips</li>
+                            <li>Emergency contacts</li>
+                        </ul>
+                        <p>Click "Start" to begin your conversation with our virtual assistant.</p>
+                    </div>
+                    <button class="start-button" id="startButton">
+                        <i class="fas fa-comments"></i> Start Chat
+                    </button>
+                </div>
+
+                <!-- Chat messages will appear here after starting -->
+            </div>
+
+            <div class="quick-actions" id="quickActions">
+                <button class="quick-action" onclick="sendQuickMessage('Morning exercise routine')">Morning Exercises</button>
+                <button class="quick-action" onclick="sendQuickMessage('Healthy meal ideas')">Meal Ideas</button>
+                <button class="quick-action" onclick="sendQuickMessage('Medication reminder setup')">Medication Help</button>
+                <button class="quick-action" onclick="sendQuickMessage('Fall prevention tips')">Fall Prevention</button>
+            </div>
+
+            <div class="chat-input" id="chatInput">
+                <input type="text" id="userInput" placeholder="Type your question here..." />
+                <button onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    @Html.AntiForgeryToken()
+
+    <script>
+        $(document).ready(function() {
+            
+
+            // Start chat button click handler
+            $('#startButton').click(startChat);
+
+            // Send message button click handler
+            $('.chat-input button').click(sendMessage);
+
+            // Quick action buttons click handler
+            $('.quick-actions').on('click', '.quick-action', function() {
+                const message = $(this).text().replace('Exercises', 'exercise').replace('Ideas', 'ideas').replace('Help', 'help').replace('Prevention', 'prevention');
+                sendQuickMessage(message);
+            });
+
+            // Enter key press handler
+            $('#userInput').keypress(function(e) {
+                if (e.which === 13) {
+                    sendMessage();
+                }
+            });
+
+        let chatStarted = false;
+
+        function startChat() {
+            if (!chatStarted) {
+                $('#startContainer').hide();
+                $('#chatInput, #quickActions').addClass('active');
+                addMessage("Hello! I'm your MediaLab Elderly Care Assistant. I'm here to help with exercise recommendations, health tips, and daily care guidance. How can I assist you today?", 'bot');
+                $('#userInput').focus();
+                chatStarted = true;
+            }
+        }
+
+        function sendMessage() {
+            const message = $('#userInput').val().trim();
+            if (message) {
+                addMessage(message, 'user');
+                $('#userInput').val('');
+
+                const typingIndicator = addTypingIndicator();
+
+                $.ajax({
+                    url: '?handler=Query',
+                    type: 'POST',
+                    headers: {
+                        "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: { message: message },
+                    success: function(response) {
+                        typingIndicator.remove();
+                        addMessage(response, 'bot');
+                    },
+                    error: function() {
+                        typingIndicator.remove();
+                        addMessage("Sorry, I'm having trouble connecting to the service. Please try again later.", 'bot');
+                    }
+                });
+            }
+        }
+
+        function sendQuickMessage(message) {
+            $('#userInput').val(message).focus();
+            sendMessage();
+        }
+
+        function addTypingIndicator() {
+            const indicator = $('<div class="message bot-message typing-indicator"><span></span><span></span><span></span></div>');
+            $('#chatMessages').append(indicator);
+            $('#chatMessages').scrollTop($('#chatMessages')[0].scrollHeight);
+            return indicator;
+        }
+
+        function addMessage(text, sender) {
+            const messageDiv = $(`<div class="message ${sender}-message"></div>`).text(text);
+            $('#chatMessages').append(messageDiv);
+            $('#chatMessages').scrollTop($('#chatMessages')[0].scrollHeight);
+        }
+        });
+    </script>
+</body>
+</html>
