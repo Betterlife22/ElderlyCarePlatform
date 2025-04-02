@@ -6,7 +6,10 @@ namespace BLL.Mappings
     {
         public HealthRecordProfile()
         {
-            CreateMap<HealthRecord, HealthRecordDTO>();
+            CreateMap<HealthRecord, HealthRecordDTO>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName))
+                .ForMember(dest => dest.BloodPressure, opt => opt.MapFrom(src => src.BloodPresure));
+
 
             CreateMap<HealthRecordCreateDTO, HealthRecord>()
                 .ForMember(dest => dest.Created, opt => opt.MapFrom(_ => DateTime.Now))
