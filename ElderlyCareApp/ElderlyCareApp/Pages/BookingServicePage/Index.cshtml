@@ -19,7 +19,7 @@
         string statusClass = item.Status switch
         {
             Constants.Confirmed => "text-primary",
-            Constants.InProccess => "text-warning",
+            Constants.Processing => "text-warning",
             Constants.Completed => "text-success",
             Constants.Cancelled => "text-danger",
             _ => "text-secondary"

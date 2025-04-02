@@ -42,7 +42,7 @@ namespace BLL.Services
         public async Task AddBookingAsync(BookingCreateDTO model)
         {          
             Booking booking = _mapper.Map<Booking>(model);
-            booking.Status = Constants.InProccess;
+            booking.Status = Constants.Processing;
             booking.Created = DateTime.Now;
             _unitOfWork.BeginTransaction();
             try

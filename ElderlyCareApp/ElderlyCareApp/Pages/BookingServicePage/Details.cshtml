@@ -28,7 +28,7 @@
                     string statusClass = Model.Booking.Status switch
                     {
                         Constants.Confirmed => "text-primary",
-                        Constants.InProccess => "text-warning",
+                        Constants.Processing => "text-warning",
                         Constants.Completed => "text-success",
                         Constants.Cancelled => "text-danger",
                         _ => "text-secondary"
@@ -62,7 +62,7 @@
             </dd>
         </dl>
 
-        @if (Model.Booking.Status == Constants.InProccess)
+        @if (Model.Booking.Status == Constants.Processing)
         {
             <form method="post" asp-page-handler="Cancel" asp-route-id="@Model.Booking.Id" id="cancelForm">
                 <button type="submit" class="btn btn-danger" onclick="return confirmCancel();">Cancel</button>
