@@ -1,4 +1,5 @@
 ﻿@page
+@using DAL.Common
 @model ElderlyCareApp.Pages.Booking.BookingListModel
 @{
     Layout = "_CustomerLayout";
@@ -13,6 +14,7 @@
 
 </head>
 <body>
+
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>My Bookings</h2>
@@ -32,9 +34,21 @@
             </div>
 
         </div>
+        @* <p>
+            <a asp-page="/BookingServicePage/Service" class="btn btn-primary">Create New</a>
+        </p> *@
+
         <div class="row">
              @foreach (var booking in Model.Bookings)
             {
+                string statusClass = booking.Status switch
+                {
+                    Constants.Confirmed => "text-primary",
+                    Constants.Processing => "text-warning",
+                    Constants.Completed => "text-success",
+                    Constants.Cancelled => "text-danger",
+                    _ => "text-secondary"
+                };
             <div class="col-md-6 col-lg-4 mb-4 appointment-card">
                 <div class="card h-100 shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
@@ -62,26 +76,23 @@
                                 <i class="bi bi-cash-stack"></i>
                                 <strong>Total:</strong> @booking.Total
                         </div>
-                        
+                        <div class="mb-2">
+                            <p>
+                                <strong>Status: </strong>
+                                <span class="@statusClass rounded">
+                                    @booking.Status
+                                </span>
+                            </p>
+                        </div>
+                            
                     </div>
                     <div class="card-footer bg-transparent"> 
                            
                         <div class="d-flex gap-2">
-                            @if (booking.Status == "Scheduled")
-                            {
-                                <form method="post" asp-page-handler="MakePayment" asp-route-bookingId="@booking.Id">
-                                    <button type="submit" class="btn btn-primary btn-sm">
-                                        <i class="bi bi-credit-card"></i>
-                                        Make Payment
-                                    </button>
-                                </form>
-                            }
-                            else if (booking.Status == "Paid")
-                            {
-                                <a class="btn btn-warning btn-sm">Paid</a>
-                            }
-
-                          
+                         
+                                <a class="btn btn-primary btn-sm" asp-page="/BookingServicePage/Details" asp-route-id="@booking.Id">
+                                    <i class="bi bi-eye"></i>&nbsp; Booking Detail
+                                </a>                                                                                                            
                         </div>
                        
                     </div>

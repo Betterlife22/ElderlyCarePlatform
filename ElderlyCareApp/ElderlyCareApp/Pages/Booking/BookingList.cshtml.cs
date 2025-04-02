@@ -31,30 +31,30 @@ namespace ElderlyCareApp.Pages.Booking
             Bookings = await _bookingService.GetAllBookingsAsync();
             return Page();
         }
-        public async Task<ActionResult> OnPostMakePaymentAsync(int bookingId)
-        {
-            var booking = await _bookingService.GetBookingByIdAsync(bookingId);
-            var user = await _unitOfWork.GetRepository<User>().GetByIdAsync(booking.UserId);
-            ReceiptCreateDTO receiptCreateDTO = new ReceiptCreateDTO()
-            {
-                UserId = booking.UserId,
-                BookingId = bookingId,
-                Ammount = booking.Total,
-                PaymentMethod = "VnPay",
-                Status = "Processing"
-            };
-            var reccepit = await _receiptService.AddReceiptAsync(receiptCreateDTO);
+        //public async Task<ActionResult> OnPostMakePaymentAsync(int bookingId)
+        //{
+        //    var booking = await _bookingService.GetBookingByIdAsync(bookingId);
+        //    var user = await _unitOfWork.GetRepository<User>().GetByIdAsync(booking.UserId);
+        //    ReceiptCreateDTO receiptCreateDTO = new ReceiptCreateDTO()
+        //    {
+        //        UserId = booking.UserId,
+        //        BookingId = bookingId,
+        //        Ammount = booking.Total,
+        //        PaymentMethod = "VnPay",
+        //        Status = "Processing"
+        //    };
+        //    var reccepit = await _receiptService.AddReceiptAsync(receiptCreateDTO);
 
-            var PaymentInfo = new PaymentInformationDTO
-            {
-                Name = user.UserName,
-                ReceiptId = reccepit.Id,
-                Amount = reccepit.Ammount,//Service price must > 5000
-                OrderType = "VnPay",
-                OrderDescription = $"Payment for {booking.ServiceName}"
-            };
-            var paymenturl = await _paymentService.VnPayPayment(PaymentInfo);
-            return Redirect(paymenturl);
-        }
+        //    var PaymentInfo = new PaymentInformationDTO
+        //    {
+        //        Name = user.UserName,
+        //        ReceiptId = reccepit.Id,
+        //        Amount = reccepit.Ammount,//Service price must > 5000
+        //        OrderType = "VnPay",
+        //        OrderDescription = $"Payment for {booking.ServiceName}"
+        //    };
+        //    var paymenturl = await _paymentService.VnPayPayment(PaymentInfo);
+        //    return Redirect(paymenturl);
+        //}
     }
 }

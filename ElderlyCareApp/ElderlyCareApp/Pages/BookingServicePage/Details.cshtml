@@ -4,7 +4,7 @@
 
 @{
     ViewData["Title"] = "Details";
-    Layout = "~/Pages/Shared/_Layout.cshtml";
+    Layout = "_CustomerLayout";
 }
 
 <h1 class="text-center">Booking Details</h1>
@@ -62,23 +62,23 @@
             </dd>
         </dl>
 
-        @if (Model.Booking.Status == Constants.Processing)
+        @if (Model.Booking?.Status == Constants.Processing)
         {
             <form method="post" asp-page-handler="Cancel" asp-route-id="@Model.Booking.Id" id="cancelForm">
                 <button type="submit" class="btn btn-danger" onclick="return confirmCancel();">Cancel</button>
             </form>
         }
 
-        @if (Model.Booking.Status == Constants.Confirmed)
+        @if (Model.Booking?.Status == Constants.Confirmed)
         {
-            <form method="post" asp-page-handler="MakePayment" asp-route-id="@Model.Booking.Id" id="paymentForm">
-                <button type="submit" class="btn btn-success mt-3">Make Payment</button>
+            <form method="post" asp-page-handler="MakePayment" asp-route-bookingId="@Model.Booking.Id" id="paymentForm">
+                <button type="submit" class="btn btn-success mt-3"><i class="bi bi-credit-card-2-back"></i>&nbsp; Make Payment</button>
             </form>
         }
     </div>
 
     <div class="text-center mt-4">
-        <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+        <a asp-page="/Booking/BookingList" class="btn btn-secondary">Back to List</a>
     </div>
 </div>
 

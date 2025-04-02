@@ -224,8 +224,8 @@
 
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
-                <h2>Memberships</h2>
-                <p>We provide some packages</p>
+                <h2>Services</h2>
+                <p>We provide some services</p>
             </div><!-- End Section Title -->
             <div class="container">
 
@@ -243,8 +243,11 @@
                                     <h3>@package.Name</h3>
                                     <h4>@package.Price.ToString("N0") VND</h4>
                                     <p>@package.Description</p>
-                                    <p><strong>Duration: </strong>@package.Duration</p>                                   
+                                    <p><strong>Duration: </strong>@package.Duration</p>
+                                    <hr class="dropdown-divider">
+                                    <a class="btn btn-primary" asp-page="/BookingServicePage/Create" asp-route-id="@package.Id">Book Service</a>
                                 </div>
+                                
                             </div>
                         }
                     } 
