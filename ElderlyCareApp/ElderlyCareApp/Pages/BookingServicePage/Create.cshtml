@@ -20,10 +20,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Booking.ServiceId" class="control-label">Service</label>
-@*                    <select asp-for="Booking.ServiceId" class ="form-control" asp-items="ViewBag.ServiceId"></select>
-                *@  <input type="hidden" asp-for="Booking.ServiceId" value="@Model.Service.Id" />
-
-                <input class="form-control" value="@Model.Service.Name" readonly />
+                    <select asp-for="Booking.ServiceId" class ="form-control" asp-items="ViewBag.ServiceId"></select>
             </div>
                 <div class="form-group">
                     <label asp-for="Booking.ScheduleDate" class="control-label"></label>

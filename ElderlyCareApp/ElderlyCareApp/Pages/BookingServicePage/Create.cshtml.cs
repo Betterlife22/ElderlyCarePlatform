@@ -26,7 +26,7 @@ namespace ElderlyCareApp.Pages.BookingServicePage
         public async Task<IActionResult> OnGet(int id)
         {
             ViewData["CaregiverId"] = new SelectList(await _careService.GetAllCaregiversAsync(), "Id", "UserName");
-            ViewData["ServiceId"] = new SelectList(await _serviceService.GetAllServicesAsync(), "Id", "Description");
+            ViewData["ServiceId"] = new SelectList(await _serviceService.GetAllServicesAsync(), "Id", "Name");
             Service = await _serviceService.GetServiceByIdAsync(id);
             return Page();
         }
@@ -50,7 +50,7 @@ namespace ElderlyCareApp.Pages.BookingServicePage
             {
                 TempData["Message"] = ex.Message;
             }          
-            return RedirectToPage("./Index");
+            return RedirectToPage("Booking/BookingList");
         }
     }
 }
