@@ -22,10 +22,16 @@ namespace ElderlyCareApp.Pages.CaregiverPage.MyUserPage
 
         public async Task OnGetAsync()
         {
-            int caregiverId = 11; //Hardcode
+            int? userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null)
+            {
+                RedirectToPage("/Auth/Login"); 
+                return;
+            }
 
-            User = await _bookingService.GetCaregiverCustomersAsync(caregiverId);
+            User = await _bookingService.GetCaregiverCustomersAsync(userId.Value);
         }
+
 
         public async Task<IActionResult> OnPostAddHealthRecordAsync(HealthRecordCreateDTO healthRecord)
         {
