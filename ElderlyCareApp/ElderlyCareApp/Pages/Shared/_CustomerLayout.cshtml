@@ -26,8 +26,8 @@
 
     <!-- Main CSS File -->
     <link href="assets/css/main.css" rel="stylesheet">
-    <link href="css/notification.css" rel="stylesheet">
-    <link href="css/notificationUI.css" rel="stylesheet">
+    @* <link href="css/notification.css" rel="stylesheet">
+    <link href="css/notificationUI.css" rel="stylesheet"> *@
 
     <!-- Main Notification File -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.17/signalr.min.js"></script>
@@ -41,16 +41,7 @@
     ======================================================== -->
 </head>
 <body class="index-page">
-    <div id="notificationContainer"></div>
-    @if (TempData["Notification"] != null)
-    {
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                showNotification('@TempData["Notification"]');
-            });
-        </script>
-    }
-    <script src="~/js/notification.js"></script>
+    
     <header id="header" class="header sticky-top">
 
         <div class="topbar d-flex align-items-center">
@@ -211,14 +202,14 @@
         </div>
 
     </footer>
-    <script src="~/lib/chart.js/dist/chart.umd.js"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+@*     <script src="~/lib/chart.js/dist/chart.umd.js"></script>
+ *@    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/notification-ui.js"></script>
-    @* <script src="~/js/auth.js"></script> *@
-    <script src="~/js/notification.js"></script>
-    <script>
+@*     <script src="~/js/notification-ui.js"></script>
+ *@    @* <script src="~/js/auth.js"></script> *@
+@*     <script src="~/js/notification.js"></script>
+ *@    <script>
         document.addEventListener("DOMContentLoaded", function () {
             let jwtData = token.split('.')[1]
             let decodejson = window.atob(jwtData)

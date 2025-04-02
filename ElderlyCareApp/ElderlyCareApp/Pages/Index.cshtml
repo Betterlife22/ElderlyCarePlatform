@@ -1,4 +1,4 @@
-﻿@page
+@page
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
@@ -185,7 +185,7 @@
                     <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
                         <i class="fa-solid fa-user-doctor"></i>
                         <div class="stats-item">
-                            <span data-purecounter-start="0" data-purecounter-end="10" data-purecounter-duration="1" class="purecounter"></span>
+                            <span data-purecounter-start="0" data-purecounter-end="@Model.Caregivers.Count()" data-purecounter-duration="1" class="purecounter"></span>
                             <p>Doctors</p>
                         </div>
                     </div><!-- End Stats Item -->
@@ -201,8 +201,8 @@
                     <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
                         <i class="fas fa-flask"></i>
                         <div class="stats-item">
-                            <span data-purecounter-start="0" data-purecounter-end="12" data-purecounter-duration="1" class="purecounter"></span>
-                            <p>Research Labs</p>
+                            <span data-purecounter-start="0" data-purecounter-end="@Model.Services.Count()" data-purecounter-duration="1" class="purecounter"></span>
+                            <p>Services</p>
                         </div>
                     </div><!-- End Stats Item -->
 

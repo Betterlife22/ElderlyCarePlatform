@@ -1,5 +1,6 @@
 using DAL;
 using BLL;
+using ElderlyCareApp.SignalRHub;
 
 namespace ElderlyCareApp
 {
@@ -15,7 +16,7 @@ namespace ElderlyCareApp
             builder.Services.AddSession();
             builder.Services.AddDAL(builder.Configuration);
             builder.Services.AddHttpContextAccessor();
-
+            builder.Services.AddSignalR();
 
             var app = builder.Build();
 
@@ -34,6 +35,7 @@ namespace ElderlyCareApp
             app.UseRouting();
             app.UseSession();
             app.UseAuthorization();
+            app.MapHub<HubSignalR>("/signalRHub");
 
             app.MapRazorPages();
 
