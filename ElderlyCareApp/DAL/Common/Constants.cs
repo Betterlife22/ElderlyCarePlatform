@@ -32,11 +32,11 @@
 
         #region BookingStatus
 
-        public const string InReview = "InReview";
-        public const string InProccess = "InProccess";
+        public const string Processing = "Processing";
         public const string Cancelled = "Cancelled";
         public const string Confirmed = "Confirmed";
         public const string Completed = "Completed";
+        public const string Overdue = "Overdue";
 
         #endregion
 

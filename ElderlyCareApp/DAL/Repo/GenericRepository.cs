@@ -1,6 +1,7 @@
 ﻿using DAL.Extension;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace DAL.Repo
@@ -40,11 +41,28 @@ namespace DAL.Repo
             return _dbSet.ToList();
         }
 
-        public async Task<List<T>> GetAllAsync()
+        //public async Task<List<T>> GetAllAsync()
+        //{
+        //    return await _dbSet.ToListAsync();
+        //}
+        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
         {
-            return await _dbSet.ToListAsync();
-        }
+            IQueryable<T> query = _dbSet;
 
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+            if (includeProperties != null)
+            {
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp.Trim());
+                }
+            }
+
+            return await query.ToListAsync();
+        }
         public T? GetById(object id)
         {
             return _dbSet.Find(id);
@@ -54,7 +72,28 @@ namespace DAL.Repo
         {
             return await _dbSet.FindAsync(id);
         }
+        public async Task<T> GetByPropertyAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true, string? includeProperties = null)
+        {
+            IQueryable<T> query = _dbSet;
+            if (!tracked)
+            {
+                query = query.AsNoTracking();
+            }
+            // query = query.AsNoTracking();
+            if (includeProperties != null)
+            {
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp.Trim());
+                }
+            }
 
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+            return await query.FirstOrDefaultAsync();
+        }
         public void Insert(T obj)
         {
             _dbSet.Add(obj);

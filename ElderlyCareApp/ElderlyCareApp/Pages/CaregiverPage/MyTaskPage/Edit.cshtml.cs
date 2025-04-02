@@ -2,19 +2,16 @@
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace ElderlyCareApp.Pages.AdminPage.BookingPage
+namespace ElderlyCareApp.Pages.CaregiverPage.MyTaskPage
 {
     public class EditModel : PageModel
     {
         private readonly IBookingService _bookingService;
-        private readonly ICaregiverService _caregiverService;
 
-        public EditModel(IBookingService bookingService, ICaregiverService caregiverService)
+        public EditModel(IBookingService bookingService)
         {
             _bookingService = bookingService;
-            _caregiverService = caregiverService;
         }
 
         [BindProperty]
@@ -37,12 +34,11 @@ namespace ElderlyCareApp.Pages.AdminPage.BookingPage
             {
                 Id = bookingDTO.Id,
                 ScheduleDate = bookingDTO.ScheduleDate,
-                CaregiverId = bookingDTO.CaregiverId, 
+                CaregiverId = bookingDTO.CaregiverId,
                 Status = bookingDTO.Status,
-                AdminNote = "" 
+                AdminNote = ""
             };
 
-            ViewData["CaregiverId"] = new SelectList(await _caregiverService.GetAllCaregiversAsync(), "Id", "UserName");
             return Page();
         }
 
@@ -52,8 +48,7 @@ namespace ElderlyCareApp.Pages.AdminPage.BookingPage
 
             if (result != "Booking updated successfully.")
             {
-                ModelState.AddModelError("", result); 
-                ViewData["CaregiverId"] = new SelectList(await _caregiverService.GetAllCaregiversAsync(), "Id", "UserName");
+                ModelState.AddModelError("", result);
                 return Page(); // Re-render the page with the validation message
             }
 

@@ -1,0 +1,125 @@
+﻿@page
+@using DAL.Common
+@model ElderlyCareApp.Pages.CaregiverPage.MyTaskPage.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = null;
+}
+
+<!-- Full Page Wrapper -->
+<div class="wrapper">
+    <!-- Sidebar -->
+    @await Html.PartialAsync("Shared/_Sidebar")
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>Bookings</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Booking[0].ScheduleDate)</th>
+                    <th>@Html.DisplayNameFor(model => model.Booking[0].UserName)</th>
+                    <th>@Html.DisplayNameFor(model => model.Booking[0].PhoneNumber)</th>
+                    <th>@Html.DisplayNameFor(model => model.Booking[0].CaregiverName)</th>
+                    <th>@Html.DisplayNameFor(model => model.Booking[0].ServiceName)</th>
+                    <th>@Html.DisplayNameFor(model => model.Booking[0].Status)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Booking)
+                {
+                    <tr>
+                        <td>@item.ScheduleDate.ToString("dd/MM/yyyy hh:mm tt")</td>
+                        <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                        <td>@Html.DisplayFor(modelItem => item.CaregiverName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.ServiceName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                        <td> 
+                            @if (item.Status == Constants.Processing) 
+                            { 
+                            <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a> 
+                            }
+                            @if (item.Status == Constants.Confirmed)
+                            {
+                                <form method="post" asp-page-handler="MarkAsDone" asp-route-id="@item.Id" style="display:inline;">
+                                    <button type="submit" class="btn btn-success btn-sm">Mark as Done</button>
+                                </form>
+                            }
+                        </td> 
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <!-- Display Errors -->
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger">
+                @Model.ErrorMessage
+            </div>
+        }
+    </div>
+</div>
+
+<!-- CSS Fix -->
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .wrapper {
+        display: flex;
+        height: 100vh;
+    }
+
+    .sidebar {
+        width: 250px;
+        background: #042331;
+        color: white;
+        position: fixed;
+        left: 0;
+        height: 100%;
+        transition: all 0.5s ease;
+        z-index: 1000;
+    }
+
+    .main-content {
+        flex-grow: 1;
+        padding: 20px;
+        background: #f4f4f4;
+        margin-left: 250px;
+    }
+
+    .table {
+        width: 100%;
+        background: white;
+        border-radius: 5px;
+        padding: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-collapse: collapse;
+    }
+
+        .table th, .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            background-color: #f4f4f4;
+        }
+
+        .table td {
+            background-color: #fff;
+        }
+
+        .table tr:hover {
+            background-color: #f1f1f1;
+        }
+</style>

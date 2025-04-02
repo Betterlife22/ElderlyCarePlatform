@@ -6,7 +6,8 @@ namespace BLL.Interfaces
     {
         Task<List<ReceiptDTO>> GetAllReceiptsAsync();
         Task<ReceiptDTO?> GetReceiptByIdAsync(int id);
-        Task AddReceiptAsync(ReceiptCreateDTO receiptDto);
+        Task<Receipt> AddReceiptAsync(ReceiptCreateDTO receiptDto);
+        Task UpdateReceiptStatus(int receiptId);
         Task UpdateReceiptAsync(int id, ReceiptUpdateDTO receiptDto);
         Task DeleteReceiptAsync(int id);
     }

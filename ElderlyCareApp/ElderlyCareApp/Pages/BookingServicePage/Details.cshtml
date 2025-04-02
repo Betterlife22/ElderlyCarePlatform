@@ -1,0 +1,91 @@
+﻿@page
+@using DAL.Common
+@model ElderlyCareApp.Pages.BookingServicePage.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "_CustomerLayout";
+}
+
+<h1 class="text-center">Booking Details</h1>
+
+<div class="container">
+    <div class="card shadow-lg p-4 my-4">
+        <dl class="row">
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Booking.ScheduleDate)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Booking.ScheduleDate)
+            </dd>
+
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Booking.Status)
+            </dt>
+            <dd class="col-sm-9">
+                <!-- Determine the status button class based on the status -->
+                @{
+                    string statusClass = Model.Booking.Status switch
+                    {
+                        Constants.Confirmed => "text-primary",
+                        Constants.Processing => "text-warning",
+                        Constants.Completed => "text-success",
+                        Constants.Cancelled => "text-danger",
+                        _ => "text-secondary"
+                    };
+                }
+                <span class=" @statusClass rounded">
+                    @Model.Booking.Status
+                </span>
+            </dd>
+
+            <dt class="col-sm-3">
+                Note
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Booking.AdminNote)
+            </dd>
+
+            <!-- Additional fields -->
+            <dt class="col-sm-3 pt-1">
+                @Html.DisplayNameFor(model => model.Booking.CaregiverName)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Booking.CaregiverName)
+            </dd>
+
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Booking.ServiceName)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Booking.ServiceName)
+            </dd>
+        </dl>
+
+        @if (Model.Booking?.Status == Constants.Processing)
+        {
+            <form method="post" asp-page-handler="Cancel" asp-route-id="@Model.Booking.Id" id="cancelForm">
+                <button type="submit" class="btn btn-danger" onclick="return confirmCancel();">Cancel</button>
+            </form>
+        }
+
+        @if (Model.Booking?.Status == Constants.Confirmed)
+        {
+            <form method="post" asp-page-handler="MakePayment" asp-route-bookingId="@Model.Booking.Id" id="paymentForm">
+                <button type="submit" class="btn btn-success mt-3"><i class="bi bi-credit-card-2-back"></i>&nbsp; Make Payment</button>
+            </form>
+        }
+    </div>
+
+    <div class="text-center mt-4">
+        <a asp-page="/Booking/BookingList" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmCancel() {
+            return confirm("Are you sure you want to cancel this booking?");
+        }
+    </script>
+}

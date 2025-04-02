@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ElderlyCareApp.styles.css" asp-append-version="true" />
+
+    <!-- Render Styles section if defined -->
+    @RenderSection("Styles", required: false)
 </head>
 <body>
     <header>
@@ -24,6 +27,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Booking/BookingList">My Booking</a>
                         </li>
                     </ul>
                 </div>
@@ -45,7 +51,9 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
 
+    <!-- Render Scripts section if defined -->
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

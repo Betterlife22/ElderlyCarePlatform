@@ -12,7 +12,9 @@ namespace ElderlyCareApp
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddBLL();
+            builder.Services.AddSession();
             builder.Services.AddDAL(builder.Configuration);
+            builder.Services.AddHttpContextAccessor();
 
 
             var app = builder.Build();
@@ -24,12 +26,13 @@ namespace ElderlyCareApp
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseStaticFiles();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthorization();
 
             app.MapRazorPages();
