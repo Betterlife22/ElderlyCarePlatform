@@ -17,16 +17,17 @@ namespace ElderlyCareApp.Pages.CaregiverPage.MyTaskPage
 
         public IList<BookingDTO> Booking { get; set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             int? userId = HttpContext.Session.GetInt32("UserID");
             if (userId == null)
             {
-                RedirectToPage("/Auth/Login");
-                return;
+                return RedirectToPage("/Auth/Index"); 
             }
 
             Booking = await _bookingService.GetCaregiverBookingAsync(userId.Value);
+
+            return Page();
         }
 
 

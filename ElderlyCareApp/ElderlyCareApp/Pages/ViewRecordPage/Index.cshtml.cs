@@ -1,5 +1,6 @@
 ﻿using BLL.DTO.HealthRecordDTOs;
 using BLL.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ElderlyCareApp.Pages.ViewRecordPage
@@ -15,16 +16,17 @@ namespace ElderlyCareApp.Pages.ViewRecordPage
 
         public IList<HealthRecordDTO> HealthRecord { get;set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             int? userId = HttpContext.Session.GetInt32("UserID");
             if (userId == null)
             {
-                RedirectToPage("/Auth/Login");
-                return;
+                return RedirectToPage("/Auth/Index");
             }
 
             HealthRecord = await _healthRecordService.GetRecordsByUserIdAsync(userId.Value);
+
+            return Page();
         }
 
     }
