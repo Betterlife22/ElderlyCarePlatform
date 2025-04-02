@@ -14,6 +14,7 @@ namespace ElderlyCareApp
             builder.Services.AddBLL();
             builder.Services.AddSession();
             builder.Services.AddDAL(builder.Configuration);
+            builder.Services.AddHttpContextAccessor();
 
 
             var app = builder.Build();

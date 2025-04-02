@@ -1,4 +1,7 @@
 ﻿using BLL.DTO.ServiceDTOs;
+using BLL.Interfaces;
+using DAL.Entities;
+using DAL.Interfaces;
 
 namespace BLL.Services
 {

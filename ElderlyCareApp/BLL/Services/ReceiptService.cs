@@ -1,4 +1,5 @@
 ﻿using BLL.DTO.ReceiptDTOs;
+using DAL.Libraries;
 
 namespace BLL.Services
 {
@@ -25,22 +26,32 @@ namespace BLL.Services
             return receipt != null ? _mapper.Map<ReceiptDTO>(receipt) : null;
         }
 
-        public async Task AddReceiptAsync(ReceiptCreateDTO receiptDto)
+        public async Task <Receipt> AddReceiptAsync(ReceiptCreateDTO receiptDto)
         {
             var receipt = _mapper.Map<Receipt>(receiptDto);
-
             _unitOfWork.BeginTransaction();
             try
             {
                 await _unitOfWork.GetRepository<Receipt>().InsertAsync(receipt);
+                
+                
                 await _unitOfWork.SaveAsync();
                 _unitOfWork.CommitTransaction();
+                return receipt;
             }
             catch
             {
                 _unitOfWork.RollBack();
                 throw;
             }
+        }
+        public async Task UpdateReceiptStatus (int receiptId)
+        {
+            var receipt = await _unitOfWork.GetRepository<Receipt>().GetByIdAsync (receiptId);
+            receipt.Status = "Success";
+            var booking = await _unitOfWork.GetRepository<Booking>().GetByIdAsync (receipt.BookingId);
+            booking.Status = "Paid";
+            await _unitOfWork.SaveAsync();
         }
 
         public async Task UpdateReceiptAsync(int id, ReceiptUpdateDTO receiptDto)

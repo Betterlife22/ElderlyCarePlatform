@@ -18,7 +18,9 @@ public interface IGenericRepository<T> where T : class
     void DeleteRange(IEnumerable<T> entities);
 
     // async
-    Task<List<T>> GetAllAsync();
+    //Task<List<T>> GetAllAsync();
+    Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null);
+    Task<T> GetByPropertyAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true, string? includeProperties = null);
     Task<T?> GetByIdAsync(object id);
     Task InsertAsync(T obj);
     Task UpdateAsync(T obj);
