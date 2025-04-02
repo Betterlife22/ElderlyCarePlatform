@@ -21,7 +21,11 @@ namespace BLL.Services
             var bookings = await _unitOfWork.GetRepository<Booking>().GetAllAsync(includeProperties: "User,Caregiver.User,Service");
             return _mapper.Map<List<BookingDTO>>(bookings);
         }
-
+        public async Task<List<BookingDTO>> GetAllBookingsByCustomerIdAsync(int userid)
+        {
+            var bookings = await _unitOfWork.GetRepository<Booking>().GetAllAsync(b=>b.UserId==userid, includeProperties: "User,Caregiver.User,Service");
+            return _mapper.Map<List<BookingDTO>>(bookings);
+        }
         public async Task<List<BookingDTO>> GetCaregiverBookingAsync(int caregiverUserId)
         {
             var bookings = await _unitOfWork.GetRepository<Booking>()

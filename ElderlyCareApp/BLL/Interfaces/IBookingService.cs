@@ -6,6 +6,8 @@ namespace BLL.Interfaces
     public interface IBookingService
     {
         Task<List<BookingDTO>> GetAllBookingsAsync();
+        Task<List<BookingDTO>> GetAllBookingsByCustomerIdAsync(int userid);
+
         Task<List<BookingDTO>> GetCaregiverBookingAsync(int caregiverId);
         Task<BookingDTO?> GetBookingByIdAsync(int id);
         Task AddBookingAsync(BookingCreateDTO model);

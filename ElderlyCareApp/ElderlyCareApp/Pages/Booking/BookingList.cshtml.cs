@@ -28,7 +28,9 @@ namespace ElderlyCareApp.Pages.Booking
         
         public async Task<ActionResult> OnGetAsync()
         {
-            Bookings = await _bookingService.GetAllBookingsAsync();
+            var userid = HttpContext.Session.GetInt32("UserID");
+
+            Bookings = await _bookingService.GetAllBookingsByCustomerIdAsync(userid.Value);
             return Page();
         }
         //public async Task<ActionResult> OnPostMakePaymentAsync(int bookingId)
