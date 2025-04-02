@@ -17,8 +17,15 @@ namespace ElderlyCareApp.Pages.ViewRecordPage
 
         public async Task OnGetAsync()
         {
-            int userId = 9; //Hardcode
-            HealthRecord = await _healthRecordService.GetRecordsByUserIdAsync(userId);
+            int? userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null)
+            {
+                RedirectToPage("/Auth/Login");
+                return;
+            }
+
+            HealthRecord = await _healthRecordService.GetRecordsByUserIdAsync(userId.Value);
         }
+
     }
 }

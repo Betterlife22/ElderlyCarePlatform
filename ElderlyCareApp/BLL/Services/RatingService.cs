@@ -15,9 +15,14 @@ namespace BLL.Services
 
         public async Task<List<RatingDTO>> GetAllRatingsAsync()
         {
-            var ratings = await _unitOfWork.GetRepository<Rating>().GetAllAsync();
+            var ratings = await _unitOfWork.GetRepository<Rating>()
+                .GetAllAsync(
+                    includeProperties: "User,Caregiver.User"
+                );
+
             return _mapper.Map<List<RatingDTO>>(ratings);
         }
+
 
         public async Task<RatingDTO?> GetRatingByIdAsync(int id)
         {

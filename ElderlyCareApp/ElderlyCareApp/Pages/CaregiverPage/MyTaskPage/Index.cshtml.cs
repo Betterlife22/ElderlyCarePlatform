@@ -19,9 +19,16 @@ namespace ElderlyCareApp.Pages.CaregiverPage.MyTaskPage
 
         public async Task OnGetAsync()
         {
-            int caregiverId = 11; // Hardcoded ID
-            Booking = await _bookingService.GetCaregiverBookingAsync(caregiverId);
+            int? userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null)
+            {
+                RedirectToPage("/Auth/Login");
+                return;
+            }
+
+            Booking = await _bookingService.GetCaregiverBookingAsync(userId.Value);
         }
+
 
         // Handle "Mark as Done" button click
         public async Task<IActionResult> OnPostMarkAsDoneAsync(int id)
