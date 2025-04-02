@@ -47,11 +47,21 @@ namespace BLL.Services
         }
         public async Task UpdateReceiptStatus (int receiptId)
         {
-            var receipt = await _unitOfWork.GetRepository<Receipt>().GetByIdAsync (receiptId);
-            receipt.Status = "Success";
-            var booking = await _unitOfWork.GetRepository<Booking>().GetByIdAsync (receipt.BookingId);
-            booking.Status = "Paid";
-            await _unitOfWork.SaveAsync();
+            try
+            {
+                var receipt = await _unitOfWork.GetRepository<Receipt>().GetByIdAsync(receiptId);
+                receipt.Status = "Success";
+                var booking = await _unitOfWork.GetRepository<Booking>().GetByIdAsync(receipt.BookingId);
+                booking.Status = "Completed";
+                await _unitOfWork.SaveAsync(); 
+                _unitOfWork.CommitTransaction();
+            }
+            catch
+            {
+                _unitOfWork.RollBack();
+                throw;
+            }
+            
         }
 
         public async Task UpdateReceiptAsync(int id, ReceiptUpdateDTO receiptDto)
