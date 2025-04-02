@@ -1,0 +1,223 @@
+﻿@page
+@model ElderlyCareApp.Pages.CaregiverPage.MyUserPage.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = null;
+}
+
+<!-- Full Page Wrapper -->
+<div class="wrapper">
+    <!-- Sidebar -->
+    @await Html.PartialAsync("Shared/_Sidebar")
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>Bookings</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.User[0].BirthDate)</th>
+                    <th>@Html.DisplayNameFor(model => model.User[0].UserName)</th>
+                    <th>@Html.DisplayNameFor(model => model.User[0].PhoneNumber)</th>
+                    <th>@Html.DisplayNameFor(model => model.User[0].Gender)</th>
+                    <th>@Html.DisplayNameFor(model => model.User[0].Address)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.User)
+                {
+                    <tr>
+                        <td>@item.BirthDate.ToString("dd/MM/yyyy")</td>
+                        <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Gender)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Address)</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" onclick="openOverlay(@item.Id)">Add Health Record</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <!-- Display Success -->
+        @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+        {
+            <div class="alert alert-danger">
+                @Model.SuccessMessage
+            </div>
+        }
+    </div>
+    </div>
+</div>
+
+<!-- Overlay Form -->
+<div id="overlay" class="overlay">
+    <div class="overlay-content">
+        <span class="close-btn" onclick="closeOverlay()">&times;</span>
+        <h2>Add Health Record</h2>
+        <form method="post" asp-page-handler="AddHealthRecord">
+            <input type="hidden" id="UserId" name="UserId" />
+
+            <div class="form-group">
+                <label>Blood Pressure:</label>
+                <input type="text" id="BloodPresure" name="BloodPresure" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label>Heart Rate:</label>
+                <input type="number" id="HeartRate" name="HeartRate" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label>Temperature:</label>
+                <input type="number" step="0.1" id="Temperature" name="Temperature" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label>Note:</label>
+                <textarea id="Note" name="Note" class="form-control" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-success">Send</button>
+        </form>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+    function openOverlay(userId) {
+        document.getElementById("UserId").value = userId;
+        document.getElementById("overlay").style.display = "flex";
+    }
+
+    function closeOverlay() {
+        document.getElementById("overlay").style.display = "none";
+    }
+</script>
+
+<!-- CSS Styles -->
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .wrapper {
+        display: flex;
+        height: 100vh;
+    }
+
+    .sidebar {
+        width: 250px;
+        background: #042331;
+        color: white;
+        position: fixed;
+        left: 0;
+        height: 100%;
+        transition: all 0.5s ease;
+        z-index: 1000;
+    }
+
+    .main-content {
+        flex-grow: 1;
+        padding: 20px;
+        background: #f4f4f4;
+        margin-left: 250px;
+    }
+
+    .table {
+        width: 100%;
+        background: white;
+        border-radius: 5px;
+        padding: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-collapse: collapse;
+    }
+
+        .table th, .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            background-color: #f4f4f4;
+        }
+
+        .table td {
+            background-color: #fff;
+        }
+
+        .table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+    /* Overlay Styles */
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .overlay-content {
+        background: white;
+        padding: 20px;
+        width: 400px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        position: relative;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .btn-primary, .btn-success {
+        padding: 10px 15px;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        border: none;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .btn-success {
+        background-color: #28a745;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+</style>

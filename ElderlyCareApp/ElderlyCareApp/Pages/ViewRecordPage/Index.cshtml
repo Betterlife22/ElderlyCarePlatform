@@ -1,0 +1,55 @@
+﻿@page
+@model ElderlyCareApp.Pages.ViewRecordPage.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Your Record Page</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.HealthRecord[0].UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HealthRecord[0].RecordDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HealthRecord[0].BloodPressure)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HealthRecord[0].HeartRate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HealthRecord[0].Temperature)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HealthRecord[0].Note)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.HealthRecord) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+                <td>@item.RecordDate.ToString("dd/MM/yyyy hh:mm tt")</td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BloodPressure)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HeartRate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Temperature)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Note)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -11,6 +11,7 @@ namespace BLL.Mappings
 
                 .ForMember(dest => dest.ServiceName, opt => opt.MapFrom(src => src.Service != null? src.Service.Name:"Unknown"))
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User != null ? src.User.UserName : "Unknown"))
+                .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.User != null ? src.User.PhoneNumber : "Unknown"))
 
                 .ForMember(dest => dest.Total, opt => opt.MapFrom(src=>src.Service != null ? src.Service.Price : 0.0))
                 .ReverseMap();
@@ -18,7 +19,7 @@ namespace BLL.Mappings
             CreateMap<BookingCreateDTO, Booking>()
                 .ForMember(dest => dest.Created, opt => opt.MapFrom(_ => DateTime.Now))
                 .ForMember(dest => dest.LastModified, opt => opt.MapFrom(_ => DateTime.Now))
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => Constants.InReview))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => Constants.Processing))
                 .ForMember(dest => dest.Id, opt => opt.Ignore()).ReverseMap(); 
 
             CreateMap<BookingUpdateDTO, Booking>()

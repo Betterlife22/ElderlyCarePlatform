@@ -19,6 +19,17 @@ namespace BLL.Services
             return _mapper.Map<List<HealthRecordDTO>>(records);
         }
 
+        public async Task<List<HealthRecordDTO>> GetRecordsByUserIdAsync(int userId)
+        {
+            var records = await _unitOfWork.GetRepository<HealthRecord>()
+                .GetAllAsync(
+                    filter: r => r.UserId == userId,
+                    includeProperties: "User"
+                );
+
+            return _mapper.Map<List<HealthRecordDTO>>(records);
+        }
+
         public async Task<HealthRecordDTO?> GetRecordByIdAsync(int id)
         {
             var record = await _unitOfWork.GetRepository<HealthRecord>().GetByIdAsync(id);

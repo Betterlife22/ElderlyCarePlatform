@@ -1,0 +1,45 @@
+﻿@page
+@using DAL.Common
+@model ElderlyCareApp.Pages.BookingServicePage.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Booking List</h1>
+<p class="text-danger text">@(TempData["Message"])</p>
+<p>
+    <a asp-page="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<div class="row">
+    @foreach (var item in Model.Booking)
+    {
+        string statusClass = item.Status switch
+        {
+            Constants.Confirmed => "text-primary",
+            Constants.Processing => "text-warning",
+            Constants.Completed => "text-success",
+            Constants.Cancelled => "text-danger",
+            _ => "text-secondary"
+        };
+
+        <div class="col-md-4">
+            <div class="p-4 border rounded-lg shadow-md">
+                <p class="font-semibold">Date: @item.ScheduleDate.ToString("dd/MM/yyyy")</p>
+                <p>
+                    <strong>Status: </strong>
+                    <span class="@statusClass rounded">
+                        @item.Status
+                    </span>
+                </p>
+
+
+                <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
+            </div>
+        </div>
+    }
+</div>
+
+    

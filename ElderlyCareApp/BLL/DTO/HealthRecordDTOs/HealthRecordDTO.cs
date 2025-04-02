@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public int UserId { get; set; }
+        public string UserName { get; set; } = default!;
         public DateTime RecordDate { get; set; }
         public string BloodPressure { get; set; } = default!;
         public int HeartRate { get; set; }

@@ -9,5 +9,6 @@ namespace BLL.Interfaces
         Task AddRecordAsync(HealthRecordCreateDTO recordDto);
         Task UpdateRecordAsync(int id, HealthRecordUpdateDTO recordDto);
         Task DeleteRecordAsync(int id);
+        Task<List<HealthRecordDTO>> GetRecordsByUserIdAsync(int userId);
     }
 }
