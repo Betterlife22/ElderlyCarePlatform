@@ -1,16 +1,20 @@
 ﻿using BLL.DTO.BookingDTOs;
 using BLL.Interfaces;
+using ElderlyCareApp.SignalRHub;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR;
 
 namespace ElderlyCareApp.Pages.CaregiverPage.MyTaskPage
 {
     public class EditModel : PageModel
     {
         private readonly IBookingService _bookingService;
+        private readonly IHubContext<HubSignalR> _hubContext;
 
-        public EditModel(IBookingService bookingService)
+        public EditModel(IBookingService bookingService, IHubContext<HubSignalR> hubContext)
         {
+            _hubContext = hubContext;   
             _bookingService = bookingService;
         }
 
@@ -48,9 +52,11 @@ namespace ElderlyCareApp.Pages.CaregiverPage.MyTaskPage
 
             if (result != "Booking updated successfully.")
             {
+
                 ModelState.AddModelError("", result);
                 return Page(); // Re-render the page with the validation message
             }
+            await _hubContext.Clients.All.SendAsync("UpdateStatus", Booking.Id);
 
             return RedirectToPage("./Index");
         }
