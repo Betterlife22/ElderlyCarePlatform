@@ -3,3 +3,7 @@
 ################################################################################
 
 /.vs
+/ElderlyCareApp/DAL/Data/Migrations/20250331233702_ChangeRelationship.cs
+/ElderlyCareApp/DAL/Data/Migrations/DatabaseContextModelSnapshot.cs
+/ElderlyCareApp/DAL/Entities/ElderlyProfile.cs
+/ElderlyCareApp/DAL/Entities/User.cs
