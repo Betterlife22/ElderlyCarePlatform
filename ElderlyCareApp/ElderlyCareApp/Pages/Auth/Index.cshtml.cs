@@ -27,22 +27,18 @@ public class LoginModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
-        if (!ModelState.IsValid)
-        {
-            return Page();
-        }
 
         var user = await _userService.LoginAsync(Email, Password, LoginType);
 
         HttpContext.Session.SetInt32("UserID", user.Id);
 
-        if (user.Role == "Staff")
+        if (user.Role == "Caregiver")
         {
-            return RedirectToPage("/Staff/Index");
+            return RedirectToPage("/CaregiverPage/MyTaskPage/Index");
         }
 
         else if (user.Role == "User")
-            return RedirectToPage("/Auth/Login");
+            return RedirectToPage("./Index");
 
         return RedirectToPage("/Auth/Index"); // Redirect after login
     }

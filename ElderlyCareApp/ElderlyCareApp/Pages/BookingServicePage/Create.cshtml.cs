@@ -37,9 +37,13 @@ namespace ElderlyCareApp.Pages.BookingServicePage
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            //int? userId = HttpContext.Session.GetInt32("UserId");
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+            int? userId = HttpContext.Session.GetInt32("UserID");
 
-            Booking.UserId = 1;
+            Booking.UserId = userId!.Value;
             try
             {
                 await _bookingService.AddBookingAsync(Booking);
@@ -50,7 +54,7 @@ namespace ElderlyCareApp.Pages.BookingServicePage
             {
                 TempData["Message"] = ex.Message;
             }          
-            return RedirectToPage("Booking/BookingList");
+            return RedirectToPage("../Booking/BookingList");
         }
     }
 }

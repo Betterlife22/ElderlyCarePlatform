@@ -54,11 +54,11 @@ namespace BLL.Services
                 var booking = await _unitOfWork.GetRepository<Booking>().GetByIdAsync(receipt.BookingId);
                 booking.Status = "Completed";
                 await _unitOfWork.SaveAsync(); 
-                _unitOfWork.CommitTransaction();
+                //_unitOfWork.CommitTransaction();
             }
             catch
             {
-                _unitOfWork.RollBack();
+                //_unitOfWork.RollBack();
                 throw;
             }
             
