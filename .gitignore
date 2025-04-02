@@ -7,3 +7,4 @@
 /ElderlyCareApp/DAL/Data/Migrations/DatabaseContextModelSnapshot.cs
 /ElderlyCareApp/DAL/Entities/ElderlyProfile.cs
 /ElderlyCareApp/DAL/Entities/User.cs
+/ElderlyCareApp/DAL/Data/Migrations/20250402023712_Initial.cs
