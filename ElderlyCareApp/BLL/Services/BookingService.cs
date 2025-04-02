@@ -1,4 +1,5 @@
 ﻿using BLL.DTO.BookingDTOs;
+using BLL.DTO.UserDTOs;
 using DAL.Common;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,6 +38,25 @@ namespace BLL.Services
             var booking = await _unitOfWork.GetRepository<Booking>().GetByPropertyAsync(b => b.Id == id, includeProperties: "User,Caregiver.User,Service");
             return booking != null ? _mapper.Map<BookingDTO>(booking) : null;
         }
+
+        public async Task<List<UserDTO>> GetCaregiverCustomersAsync(int caregiverUserId)
+        {
+            var bookings = await _unitOfWork.GetRepository<Booking>()
+                .GetAllAsync(
+                    filter: b => b.Caregiver.UserId == caregiverUserId &&
+                                 (b.Status == Constants.Confirmed || b.Status == Constants.Completed),
+                    includeProperties: "User,Caregiver.User,Service"
+                );
+
+            var distinctUsers = bookings
+                .Select(b => b.User)
+                .Where(user => user != null) // Avoid null users
+                .Distinct()
+                .ToList();
+
+            return _mapper.Map<List<UserDTO>>(distinctUsers);
+        }
+
 
 
         public async Task AddBookingAsync(BookingCreateDTO model)

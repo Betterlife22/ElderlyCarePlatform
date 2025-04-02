@@ -12,8 +12,8 @@
         public string Address { get; set; } = null!;
 
         // Guardian Information (Optional)
-        public string? GuardianName { get; set; }
-        public int? GuardianAge { get; set; }
-        public string? GuardianIdCard { get; set; }
+        //public string? GuardianName { get; set; }
+        //public int? GuardianAge { get; set; }
+        //public string? GuardianIdCard { get; set; }
     }
 }

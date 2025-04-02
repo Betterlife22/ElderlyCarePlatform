@@ -1,4 +1,5 @@
 ﻿using BLL.DTO.BookingDTOs;
+using BLL.DTO.UserDTOs;
 
 namespace BLL.Interfaces
 {
@@ -12,5 +13,6 @@ namespace BLL.Interfaces
         Task<string> UpdateBookingAsync(BookingUpdateDTO bookingDto);
         Task DeleteBookingAsync(int id);
         Task<string> UpdateBookingStatusByScheduleDateAsync(int bookingId);
+        Task<List<UserDTO>> GetCaregiverCustomersAsync(int caregiverId);
     }
 }
