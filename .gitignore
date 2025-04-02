@@ -3,3 +3,5 @@
 ################################################################################
 
 /.vs
+/ElderlyCareApp/DAL/Migrations
+/ElderlyCareApp/ElderlyCareApp/appsettings.json
