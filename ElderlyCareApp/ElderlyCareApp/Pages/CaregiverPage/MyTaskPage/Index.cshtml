@@ -1,5 +1,6 @@
 ﻿@page
-@model ElderlyCareApp.Pages.AdminPage.BookingPage.IndexModel
+@using DAL.Common
+@model ElderlyCareApp.Pages.CaregiverPage.MyTaskPage.IndexModel
 
 @{
     ViewData["Title"] = "Index";
@@ -24,7 +25,7 @@
                     <th>@Html.DisplayNameFor(model => model.Booking[0].CaregiverName)</th>
                     <th>@Html.DisplayNameFor(model => model.Booking[0].ServiceName)</th>
                     <th>@Html.DisplayNameFor(model => model.Booking[0].Status)</th>
-                    @* <th>Actions</th> *@
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,10 +38,30 @@
                         <td>@Html.DisplayFor(modelItem => item.CaregiverName)</td>
                         <td>@Html.DisplayFor(modelItem => item.ServiceName)</td>
                         <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                        <td> 
+                            @if (item.Status == Constants.Processing) 
+                            { 
+                            <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a> 
+                            }
+                            @if (item.Status == Constants.Confirmed)
+                            {
+                                <form method="post" asp-page-handler="MarkAsDone" asp-route-id="@item.Id" style="display:inline;">
+                                    <button type="submit" class="btn btn-success btn-sm">Mark as Done</button>
+                                </form>
+                            }
+                        </td> 
                     </tr>
                 }
             </tbody>
         </table>
+
+        <!-- Display Errors -->
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger">
+                @Model.ErrorMessage
+            </div>
+        }
     </div>
 </div>
 
@@ -81,13 +102,13 @@
         border-radius: 5px;
         padding: 10px;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        border-collapse: collapse; 
+        border-collapse: collapse;
     }
 
         .table th, .table td {
-            padding: 12px; 
-            text-align: left; 
-            border-bottom: 1px solid #ddd; 
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
         }
 
         .table th {
@@ -95,11 +116,10 @@
         }
 
         .table td {
-            background-color: #fff; 
+            background-color: #fff;
         }
 
         .table tr:hover {
             background-color: #f1f1f1;
         }
 </style>
-
