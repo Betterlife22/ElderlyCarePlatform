@@ -1,0 +1,428 @@
+﻿@page
+@model ElderlyCareApp.Pages.Resources.AboutModel
+@{
+    ViewData["Title"] = "MediaLab Health Assistant";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        :root {
+            --primary-color: #2a7fba;
+            --secondary-color: #f8f9fa;
+            --accent-color: #28a745;
+            --text-color: #333;
+            --light-gray: #e9ecef;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+            .logo img {
+                height: 50px;
+            }
+
+        .logo-text h1 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .logo-text p {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), #1a5f8b);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+            .hero h2 {
+                font-size: 2.5rem;
+                margin-bottom: 20px;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+                max-width: 800px;
+                margin: 0 auto 30px;
+            }
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+            .chat-header h3 {
+                margin: 0;
+                font-size: 1.2rem;
+            }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #28a745;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: var(--secondary-color);
+        }
+
+        .message {
+            margin-bottom: 15px;
+            max-width: 80%;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background-color: white;
+            padding: 12px 15px;
+            border-radius: 0 15px 15px 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 15px;
+            border-radius: 15px 0 15px 15px;
+            margin-left: auto;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid var(--light-gray);
+            background-color: white;
+        }
+
+            .chat-input input {
+                flex: 1;
+                padding: 12px 15px;
+                border: 1px solid var(--light-gray);
+                border-radius: 30px;
+                outline: none;
+                font-size: 1rem;
+            }
+
+            .chat-input button {
+                background-color: var(--primary-color);
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                margin-left: 10px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+                .chat-input button:hover {
+                    background-color: #1a5f8b;
+                }
+
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px 20px;
+            background-color: white;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .quick-action {
+            background-color: var(--secondary-color);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .quick-action:hover {
+                background-color: #dee2e6;
+            }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .feature-card {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+            .feature-card:hover {
+                transform: translateY(-5px);
+            }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            margin-top: 0;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+            .footer-links a {
+                color: white;
+                text-decoration: none;
+            }
+
+                .footer-links a:hover {
+                    text-decoration: underline;
+                }
+
+        @@media (max-width: 768px) {
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="/images/medialab-logo.png" alt="MediaLab Hospital Logo" />
+                <div class="logo-text">
+                    <h1>MediaLab Hospital</h1>
+                    <p>Innovative Healthcare Solutions</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h2>Your Personal Health Assistant</h2>
+            <p>Get instant access to exercise recommendations, health information, and personalized guidance from MediaLab's AI-powered assistant.</p>
+        </section>
+
+        <div class="chat-container">
+            <div class="chat-header">
+                <h3>MediaLab Health Assistant</h3>
+                <div class="status">
+                    <div class="status-dot"></div>
+                    <span>Online</span>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    Hello! I'm your MediaLab Health Assistant. How can I help you today? You can ask me about:
+                    <ul>
+                        <li>Recommended exercises</li>
+                        <li>Health conditions</li>
+                        <li>Medication information</li>
+                        <li>Hospital services</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <button class="quick-action" onclick="sendQuickMessage('Show me back pain exercises')">Back Pain Exercises</button>
+                <button class="quick-action" onclick="sendQuickMessage('What are visiting hours?')">Visiting Hours</button>
+                <button class="quick-action" onclick="sendQuickMessage('Diabetes management tips')">Diabetes Tips</button>
+                <button class="quick-action" onclick="sendQuickMessage('Cardio exercises')">Cardio Exercises</button>
+            </div>
+
+            <div class="chat-input">
+                <input type="text" id="userInput" placeholder="Type your health question here..." />
+                <button onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-dumbbell"></i>
+                </div>
+                <h3>Personalized Exercises</h3>
+                <p>Get customized exercise recommendations based on your health condition, fitness level, and recovery needs.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <h3>Health Information</h3>
+                <p>Access reliable, doctor-approved information about various health conditions, treatments, and medications.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h3>Appointment Assistance</h3>
+                <p>Get help scheduling appointments with specialists or finding the right department for your needs.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact Us</a>
+                <a href="#">About MediaLab</a>
+            </div>
+            <p>&copy; @DateTime.Now.Year MediaLab Hospital. All rights reserved.</p>
+            <p><small>This chat assistant provides general health information and is not a substitute for professional medical advice.</small></p>
+        </div>
+    </footer>
+
+    <script>
+        function sendMessage() {
+            const userInput = document.getElementById('userInput');
+            const message = userInput.value.trim();
+
+            if (message) {
+                // Add user message to chat
+                addMessage(message, 'user');
+
+                // Clear input
+                userInput.value = '';
+
+                // Simulate bot response (in a real app, this would be an API call)
+                setTimeout(() => {
+                    const botResponse = getBotResponse(message);
+                    addMessage(botResponse, 'bot');
+                }, 1000);
+            }
+        }
+
+        function sendQuickMessage(message) {
+            document.getElementById('userInput').value = message;
+            sendMessage();
+        }
+
+        function addMessage(text, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            messageDiv.textContent = text;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function getBotResponse(userMessage) {
+            const lowerMessage = userMessage.toLowerCase();
+
+            if (lowerMessage.includes('exercise') || lowerMessage.includes('workout')) {
+                if (lowerMessage.includes('back')) {
+                    return "For back pain, try these gentle exercises:\n1. Pelvic tilts\n2. Knee-to-chest stretches\n3. Cat-Cow stretches\n4. Partial crunches\nDo 10 reps of each, 2-3 times daily. Stop if you feel pain.";
+                } else if (lowerMessage.includes('cardio')) {
+                    return "Great choice for cardiovascular health! Try:\n- Brisk walking (30 min daily)\n- Swimming\n- Cycling\n- Jump rope\nStart with 15-20 minutes and gradually increase duration.";
+                } else {
+                    return "I can recommend exercises based on your needs. Could you tell me:\n1. Any specific area to focus on?\n2. Your current fitness level?\n3. Any health conditions to consider?";
+                }
+            } else if (lowerMessage.includes('hour') || lowerMessage.includes('time')) {
+                return "MediaLab Hospital visiting hours are:\nWeekdays: 10am - 8pm\nWeekends: 11am - 6pm\nEmergency department is open 24/7.";
+            } else if (lowerMessage.includes('diabet')) {
+                return "For diabetes management:\n1. Monitor blood sugar regularly\n2. Follow a balanced diet (low glycemic index foods)\n3. Get regular exercise\n4. Take medications as prescribed\n5. Schedule regular check-ups with your doctor.";
+            } else {
+                return "I'm here to help with health information. Could you please be more specific about what you need? For example:\n- \"Exercises for knee pain\"\n- \"Symptoms of flu\"\n- \"How to manage stress\"";
+            }
+        }
+
+        // Allow sending message with Enter key
+        document.getElementById('userInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>

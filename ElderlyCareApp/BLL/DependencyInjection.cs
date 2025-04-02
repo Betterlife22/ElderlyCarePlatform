@@ -1,4 +1,5 @@
 ﻿using BLL.Services;
+using ChatFPT.Service.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -21,6 +22,7 @@ public static class DependencyInjection
         services.AddScoped<ICaregiverService, CaregiverService>();
         services.AddScoped<IBookingService, BookingService>();
         services.AddScoped<IPaymentService, PaymentService>();
+        services.AddScoped<IAIService, AIService>();
         return services;
     }
 }
