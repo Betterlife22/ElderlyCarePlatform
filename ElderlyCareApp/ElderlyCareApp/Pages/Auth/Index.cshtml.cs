@@ -23,7 +23,7 @@ public class LoginModel : PageModel
     public string Password { get; set; } = string.Empty;
 
     [BindProperty]
-    public string LoginType { get; set; } = "User";
+    public string LoginType { get; set; } = "Customer";
 
     public async Task<IActionResult> OnPostAsync()
     {
@@ -37,8 +37,8 @@ public class LoginModel : PageModel
             return RedirectToPage("/CaregiverPage/MyTaskPage/Index");
         }
 
-        else if (user.Role == "User")
-            return RedirectToPage("./Index");
+        else if (user.Role == "Customer")
+            return RedirectToPage("/Index");
 
         return RedirectToPage("/Auth/Index"); // Redirect after login
     }

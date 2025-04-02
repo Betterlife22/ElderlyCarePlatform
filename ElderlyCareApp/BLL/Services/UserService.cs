@@ -89,11 +89,11 @@ namespace BLL.Services
         public async Task<UserDTO> LoginAsync(string email, string password, string loginType)
         {
             var repo = _unitOfWork.GetRepository<User>();
-            var user = (await repo.SearchAsync(u => u.Email == email && u.Role == loginType && u.Password == password)).FirstOrDefault() ?? throw new Exception("Email or password is incorrect!");
-            //if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
-            //{
-            //    throw new Exception("Email or password is incorrect!");
-            //}
+            var user = (await repo.SearchAsync(u => u.Email == email && u.Role == loginType)).FirstOrDefault() ?? throw new Exception("Email or password is incorrect!");
+            if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
+            {
+                throw new Exception("Email or password is incorrect!");
+            }
             var userDTO = _mapper.Map<UserDTO>(user);
             return userDTO;
         }
