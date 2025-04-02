@@ -1,4 +1,5 @@
 ﻿using BLL.DTO.BookingDTOs;
+using DAL.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace BLL.Services
@@ -42,14 +43,14 @@ namespace BLL.Services
         }
 
 
-        public async Task AddBookingAsync(BookingCreateDTO bookingDto)
+        public async Task AddBookingAsync(Booking model)
         {
-            var booking = _mapper.Map<Booking>(bookingDto);
-
+            model.Created = DateTime.Now;
+            model.Status = Constants.InProccess;
             _unitOfWork.BeginTransaction();
             try
             {
-                await _unitOfWork.GetRepository<Booking>().InsertAsync(booking);
+                await _unitOfWork.GetRepository<Booking>().InsertAsync(model);
                 await _unitOfWork.SaveAsync();
                 _unitOfWork.CommitTransaction();
             }
@@ -58,6 +59,14 @@ namespace BLL.Services
                 _unitOfWork.RollBack();
                 throw;
             }
+        }
+
+        public async Task UpdateStatusBooking(int id)
+        {
+            Booking booking = await _unitOfWork.GetRepository<Booking>().FindAsync(id);
+            booking.Status = Constants.Cancelled;
+                await _unitOfWork.GetRepository<Booking>().UpdateAsync(booking);
+                await _unitOfWork.SaveAsync();
         }
 
         public async Task<string> UpdateBookingAsync(BookingUpdateDTO bookingDto)
