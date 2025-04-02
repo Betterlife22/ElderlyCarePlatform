@@ -17,6 +17,7 @@ namespace DAL
             //Register repo
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
 
             // Register Database Context
             var cnn = configuration.GetConnectionString("DefaultConnectionString");

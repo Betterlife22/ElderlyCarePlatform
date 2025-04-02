@@ -13,6 +13,7 @@ namespace ElderlyCareApp
             builder.Services.AddRazorPages();
             builder.Services.AddBLL();
             builder.Services.AddDAL(builder.Configuration);
+            builder.Services.AddHttpContextAccessor();
 
 
             var app = builder.Build();

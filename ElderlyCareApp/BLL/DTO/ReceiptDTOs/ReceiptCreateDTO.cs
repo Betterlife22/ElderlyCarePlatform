@@ -6,7 +6,7 @@ namespace BLL.DTO.ReceiptDTOs
     {
         public int UserId { get; set; }
         public int BookingId { get; set; }
-        public float Amount { get; set; }
+        public float Ammount { get; set; }
         public string? PaymentMethod { get; set; }
         public string? Status { get; set; } 
     }

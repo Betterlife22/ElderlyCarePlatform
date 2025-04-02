@@ -1,4 +1,5 @@
 ﻿using BLL.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -20,6 +21,7 @@ public static class DependencyInjection
         services.AddScoped<IHealthRecordService, HealthRecordService>();
         services.AddScoped<ICaregiverService, CaregiverService>();
         services.AddScoped<IBookingService, BookingService>();
+        services.AddScoped<IPaymentService, PaymentService>();
         return services;
     }
 }

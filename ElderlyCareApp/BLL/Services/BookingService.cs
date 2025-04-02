@@ -1,4 +1,5 @@
 ﻿using BLL.DTO.BookingDTOs;
+using DAL.Entities;
 
 namespace BLL.Services
 {
@@ -15,13 +16,13 @@ namespace BLL.Services
 
         public async Task<List<BookingDTO>> GetAllBookingsAsync()
         {
-            var bookings = await _unitOfWork.GetRepository<Booking>().GetAllAsync();
+            var bookings = await _unitOfWork.GetRepository<Booking>().GetAllAsync(includeProperties: "User,Caregiver.User,Service");
             return _mapper.Map<List<BookingDTO>>(bookings);
         }
 
         public async Task<BookingDTO?> GetBookingByIdAsync(int id)
         {
-            var booking = await _unitOfWork.GetRepository<Booking>().GetByIdAsync(id);
+            var booking = await _unitOfWork.GetRepository<Booking>().GetByPropertyAsync(b => b.Id == id, includeProperties: "Service");
             return booking != null ? _mapper.Map<BookingDTO>(booking) : null;
         }
 
@@ -84,5 +85,7 @@ namespace BLL.Services
                 throw;
             }
         }
+
+        
     }
 }
