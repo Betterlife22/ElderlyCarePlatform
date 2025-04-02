@@ -12,6 +12,7 @@ namespace ElderlyCareApp
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddBLL();
+            builder.Services.AddSession();
             builder.Services.AddDAL(builder.Configuration);
             builder.Services.AddHttpContextAccessor();
 
@@ -30,7 +31,7 @@ namespace ElderlyCareApp
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthorization();
 
             app.MapRazorPages();

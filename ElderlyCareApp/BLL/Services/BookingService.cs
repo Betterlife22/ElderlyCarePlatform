@@ -39,10 +39,11 @@ namespace BLL.Services
         }
 
 
-        public async Task AddBookingAsync(BookingCreateDTO bookingDto)
-        {
-            var booking = _mapper.Map<Booking>(bookingDto);
-
+        public async Task AddBookingAsync(BookingCreateDTO model)
+        {          
+            Booking booking = _mapper.Map<Booking>(model);
+            booking.Status = Constants.InProccess;
+            booking.Created = DateTime.Now;
             _unitOfWork.BeginTransaction();
             try
             {
@@ -55,6 +56,14 @@ namespace BLL.Services
                 _unitOfWork.RollBack();
                 throw;
             }
+        }
+
+        public async Task UpdateStatusBooking(int id)
+        {
+            Booking booking = await _unitOfWork.GetRepository<Booking>().FindAsync(id);
+            booking.Status = Constants.Cancelled;
+                await _unitOfWork.GetRepository<Booking>().UpdateAsync(booking);
+                await _unitOfWork.SaveAsync();
         }
 
         public async Task<string> UpdateBookingAsync(BookingUpdateDTO bookingDto)
