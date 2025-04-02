@@ -1,4 +1,5 @@
 ﻿using BLL.DTO.CaregiverDTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace BLL.Services
 {
@@ -15,13 +16,21 @@ namespace BLL.Services
 
         public async Task<List<CaregiverDTO>> GetAllCaregiversAsync()
         {
-            var caregivers = await _unitOfWork.GetRepository<Caregiver>().GetAllAsync();
+            var caregivers = await _unitOfWork.GetRepository<Caregiver>()
+                .Entities
+                .Include(c => c.User)
+                .ToListAsync();
+
             return _mapper.Map<List<CaregiverDTO>>(caregivers);
         }
 
         public async Task<CaregiverDTO?> GetCaregiverByIdAsync(int id)
         {
-            var caregiver = await _unitOfWork.GetRepository<Caregiver>().GetByIdAsync(id);
+            var caregiver = await _unitOfWork.GetRepository<Caregiver>()
+                .Entities
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(b => b.Id == id);
+
             return caregiver != null ? _mapper.Map<CaregiverDTO>(caregiver) : null;
         }
 

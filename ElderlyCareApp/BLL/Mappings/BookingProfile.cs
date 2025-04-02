@@ -22,6 +22,8 @@ namespace BLL.Mappings
                 .ForMember(dest => dest.Id, opt => opt.Ignore()).ReverseMap(); 
 
             CreateMap<BookingUpdateDTO, Booking>()
+                .ForMember(dest => dest.CaregiverId, opt => opt.MapFrom(src => src.CaregiverId))
+                .ForMember(dest => dest.AdminNote, opt => opt.MapFrom(src => src.AdminNote))
                 .ForMember(dest => dest.LastModified, opt => opt.MapFrom(_ => DateTime.Now))
                 .ForMember(dest => dest.Id, opt => opt.Ignore()).ReverseMap(); 
         }

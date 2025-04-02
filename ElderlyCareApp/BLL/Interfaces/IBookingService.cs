@@ -7,7 +7,7 @@ namespace BLL.Interfaces
         Task<List<BookingDTO>> GetAllBookingsAsync();
         Task<BookingDTO?> GetBookingByIdAsync(int id);
         Task AddBookingAsync(BookingCreateDTO bookingDto);
-        Task UpdateBookingAsync(int id, BookingUpdateDTO bookingDto);
+        Task<string> UpdateBookingAsync(BookingUpdateDTO bookingDto);
         Task DeleteBookingAsync(int id);
     }
 }
