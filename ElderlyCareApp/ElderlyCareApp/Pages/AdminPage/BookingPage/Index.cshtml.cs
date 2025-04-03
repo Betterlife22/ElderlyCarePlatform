@@ -1,5 +1,6 @@
 ﻿using BLL.DTO.BookingDTOs;
 using BLL.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ElderlyCareApp.Pages.AdminPage.BookingPage
@@ -15,9 +16,17 @@ namespace ElderlyCareApp.Pages.AdminPage.BookingPage
 
         public IList<BookingDTO> Booking { get;set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
+            int? userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null)
+            {
+                return RedirectToPage("/Auth/Index");
+            }
+
             Booking = await _bookingService.GetAllBookingsAsync();
+
+            return Page();
         }
     }
 }

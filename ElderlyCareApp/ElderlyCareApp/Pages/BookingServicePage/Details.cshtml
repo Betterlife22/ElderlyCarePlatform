@@ -64,6 +64,19 @@
         {
             <button class="btn btn-info mt-3" data-bs-toggle="modal" data-bs-target="#feedbackModal">Feedback</button>
         }
+        @if (Model.Booking?.Status == Constants.Processing)
+        {
+            <form method="post" asp-page-handler="Cancel" asp-route-id="@Model.Booking.Id" id="cancelForm">
+                <button type="submit" class="btn btn-danger" onclick="return confirmCancel();">Cancel</button>
+            </form>
+        }
+
+        @if (Model.Booking?.Status == Constants.Confirmed)
+        {
+            <form method="post" asp-page-handler="MakePayment" asp-route-bookingId="@Model.Booking.Id" id="paymentForm">
+                <button type="submit" class="btn btn-success mt-3"><i class="bi bi-credit-card-2-back"></i>&nbsp; Make Payment</button>
+            </form>
+        }
     </div>
 
     <div class="text-center mt-4">

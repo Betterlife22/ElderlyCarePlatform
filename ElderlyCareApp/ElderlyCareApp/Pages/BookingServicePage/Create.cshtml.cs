@@ -37,10 +37,7 @@ namespace ElderlyCareApp.Pages.BookingServicePage
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+
             int? userId = HttpContext.Session.GetInt32("UserID");
 
             Booking.UserId = userId!.Value;

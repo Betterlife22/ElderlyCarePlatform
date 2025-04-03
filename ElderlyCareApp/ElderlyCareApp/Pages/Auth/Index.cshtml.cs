@@ -40,6 +40,9 @@ public class LoginModel : PageModel
         else if (user.Role == "Customer")
             return RedirectToPage("/Index");
 
+        else if (user.Role == "Admin")
+            return RedirectToPage("/AdminPage/BookingPage/Index");
+
         return RedirectToPage("/Auth/Index"); // Redirect after login
     }
 }

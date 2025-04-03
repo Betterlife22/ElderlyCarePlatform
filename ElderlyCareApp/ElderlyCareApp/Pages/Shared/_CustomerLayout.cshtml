@@ -41,7 +41,7 @@
     ======================================================== -->
 </head>
 <body class="index-page">
-    
+
     <header id="header" class="header sticky-top">
 
         <div class="topbar d-flex align-items-center">
@@ -74,20 +74,20 @@
                         <li><a href="#about">About</a></li>
                         <li><a href="#services">Services</a></li>
                         <li><a href="#doctors">Caregivers</a></li>
-                        <li><a href="#departments">Departments</a></li>                                              
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#departments">Departments</a></li>
+                        <li><a href="./Resources">Resources</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-person-circle"></i>&nbsp;
                                 <span class="ms-2" id="userFullName"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown" style="min-width: 200px;">
-                                <li>                                  
-                                    
-                                        <a class="dropdown-item" id="profile">
-                                            <i class="bi bi-person-circle"></i>&nbsp;Profile
-                                        </a>
-                                    
+                                <li>
+
+                                    <a class="dropdown-item" id="profile">
+                                        <i class="bi bi-person-circle"></i>&nbsp;Profile
+                                    </a>
+
                                 </li>
                                 <li>
 
@@ -98,14 +98,26 @@
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
-                                    <a onclick="logout()" class="dropdown-item">
-                                        <i class="bi bi-box-arrow-right"></i>&nbsp;Logout
-                                    </a>
+                                     @{
+                                         if (HttpContextAccessor.HttpContext.Session.GetInt32("UserID") != null)
+                                         {
+                                            <a onclick="logout()" class="dropdown-item">
+
+                                                <i class="bi bi-box-arrow-right"></i>&nbsp; Logout
+
+                                            </a>
+                                        }
+                                    }
                                 </li>
                             </ul>
 
                         </li>
-                        <li><a asp-page="Auth/Index">Login</a></li>
+                        @{
+                            if (HttpContextAccessor.HttpContext.Session.GetInt32("UserID") == null)
+                            {
+                                <li><a asp-page="Auth/Index">Login</a></li>
+                            }
+                        }
 
                     </ul>
                     <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
@@ -205,14 +217,16 @@
         </div>
 
     </footer>
-@*     <script src="~/lib/chart.js/dist/chart.umd.js"></script>
- *@    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @*     <script src="~/lib/chart.js/dist/chart.umd.js"></script>
+    *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-@*     <script src="~/js/notification-ui.js"></script>
- *@    @* <script src="~/js/auth.js"></script> *@
-@*     <script src="~/js/notification.js"></script>
- *@    <script>
+    @*     <script src="~/js/notification-ui.js"></script>
+    *@    @* <script src="~/js/auth.js"></script> *@
+    @*     <script src="~/js/notification.js"></script>
+    *@
+    <script>
         document.addEventListener("DOMContentLoaded", function () {
             let jwtData = token.split('.')[1]
             let decodejson = window.atob(jwtData)
@@ -224,13 +238,13 @@
     </script>
     <script>
         function logout() {
-            localStorage.removeItem("token");
+            localStorage.removeItem("token");   
             localStorage.clear();
             sessionStorage.clear();
             document.cookie.split(";").forEach((c) => {
                 document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
             });
-            window.location.href = "/Login";
+            window.location.href = "/Auth";
         }
     </script>
 
